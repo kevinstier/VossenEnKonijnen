@@ -1,7 +1,6 @@
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.Executors;
 
 public class Main {
 	public static void main(String [ ] args) {
@@ -20,9 +19,13 @@ public class Main {
 		moreSteps.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent evt) {
+				
+				simulator.getSimulatorView().disableButtons();
+				
 				Thread moreStepsThread = new Thread( new Runnable() {
 					public void run() {
 						simulator.simulate(100);
+						simulator.getSimulatorView().enableButtons();
 					}
 				});
 				moreStepsThread.start();

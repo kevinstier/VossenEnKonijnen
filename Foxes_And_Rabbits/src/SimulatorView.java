@@ -86,7 +86,14 @@ public class SimulatorView extends JFrame
     public JButton getMoreStepsButton() {
     	return this.moreSteps;
     }
-    
+    public void disableButtons() {
+    	this.oneStep.setEnabled(false);
+    	this.moreSteps.setEnabled(false);
+    }
+    public void enableButtons() {
+    	this.oneStep.setEnabled(true);
+    	this.moreSteps.setEnabled(true);
+    }
     public void setColor(Class animalClass, Color color)
     {
         colors.put(animalClass, color);
