@@ -19,12 +19,15 @@ public class Simulator
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
     // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
+    private static final double FOX_CREATION_PROBABILITY = 0.05;
     // The probability that a rabbit will be created in any given grid position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
- // The probability that a bear will be created in any given grid position.
-    private static final double BEAR_CREATION_PROBABILITY = 0.01;    
+    private static final double RABBIT_CREATION_PROBABILITY = 0.08;   
+    // The probability that a bear will be created in any given grid position.
+    private static final double BEAR_CREATION_PROBABILITY = 0.05;  
+    // The maximum amount of hunters that will be created.
+    private static final double HUNTER_CREATION_PROBABILITY = 0.08;  
 
+    
     // List of animals in the field.
     private List<Actor> actors;
     // The current state of the field.
@@ -33,10 +36,6 @@ public class Simulator
     private int step;
     // A graphical view of the simulation.
     private SimulatorView view;
-    
-    public static void main(String[] args){
-    	 new Simulator();
-    	 } 
     
     /**
      * Construct a simulation field with default size.
@@ -64,10 +63,11 @@ public class Simulator
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width);
+        view = new SimulatorView(depth, width, this);
         view.setColor(Rabbit.class, Color.orange);
         view.setColor(Fox.class, Color.blue);
         view.setColor(Bear.class, Color.black);
+        view.setColor(Hunter.class, Color.green);
         
         // Setup a valid starting point.
         reset();
@@ -79,7 +79,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(4000);
+        simulate(100);
     }
     
     /**
@@ -104,7 +104,7 @@ public class Simulator
         step++;
 
         // Provide space for newborn animals.
-        List<Actor> newActors = new ArrayList<Actor>();        
+        List<Actor> newActors = new ArrayList<Actor>();         
         // Let all rabbits act.
         for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
             Actor actor = it.next();
@@ -118,6 +118,10 @@ public class Simulator
         actors.addAll(newActors);
 
         view.showStatus(step, field);
+    }
+    
+    public SimulatorView getSimulatorView() {
+    	return this.view;
     }
         
     /**
@@ -142,7 +146,7 @@ public class Simulator
         field.clear();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
+            	if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Fox fox = new Fox(true, field, location);
                     actors.add(fox);
@@ -151,6 +155,11 @@ public class Simulator
                     Location location = new Location(row, col);
                     Rabbit rabbit = new Rabbit(true, field, location);
                     actors.add(rabbit);
+                }
+                else if(rand.nextDouble() <= HUNTER_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Hunter hunter = new Hunter(field, location);
+                    actors.add(hunter);
                 }
                 else if(rand.nextDouble() <= BEAR_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);

@@ -8,6 +8,8 @@ public class Hunter implements Actor {
     private Field field;
     // The hunter's position in the field.
     private Location location;
+ // Determine if the hunter is alive
+    private boolean alive;
 
 	/**
      * Create a hunter. 
@@ -31,6 +33,7 @@ public class Hunter implements Actor {
 
         if(isAlive()) {      
             // Move towards a source of food if found.
+        	Location location = getLocation();
             Location newLocation = findAnimal();
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
@@ -49,53 +52,81 @@ public class Hunter implements Actor {
     
     /**
      * Look for animals adjacent to the current location.
-     * Only the first live rabbit is shot.
+     * Only the first live animal is shot.
      * @return Where animal was found, or null if it wasn't.
      */
     private Location findAnimal()
     {
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
-        while(it.hasNext()) {
-            Location where = it.next();
+        for (int i = 0; i < 10; i++) {
+        	Location where = getRandomLocation(adjacent);
             Object animal = field.getObjectAt(where);
-            if(animal instanceof Rabbit) {
-                Rabbit rabbit = (Rabbit) animal;
-                if(rabbit.isAlive()) { 
-                    rabbit.setDead();
-                    // Remove the dead rabbit from the field.
-                    return where;
-                }
-            }
-                if(animal instanceof Fox) {
-                    Fox fox = (Fox) animal;
-                    if(fox.isAlive()) { 
-                        fox.setDead();
+                if(animal instanceof Animal) {
+                    Animal target = (Animal) animal;
+                    if(target.isAlive()) { 
+                        target.setDead();
                         // Remove the dead rabbit from the field.
                         return where;
                     }
                 }
-                else if(animal instanceof Bear) {
-                    Bear bear = (Bear) animal;
-                    if(bear.isAlive()) { 
-                        bear.setDead();
-                        // Remove the dead rabbit from the field.
-                        return where;
-                        }
-            }
         }
         return null;
     }
-	
-	public void act(List<Actor> newActors) {
-		// TODO Auto-generated method stub
-		
+    
+    /**
+     * Return the hunter's location.
+     * @return The hunter's location.
+     */
+    public Location getLocation()
+    {
+        return location;
+    }
+    
+    /**
+     * Place the hunter at the new location in the given field.
+     * @param newLocation The hunter's new location.
+     */
+    public void setLocation(Location newLocation)
+    {
+        if(location != null) {
+            field.clear(location);
+        }
+        location = newLocation;
+        field.place(this, newLocation);
+    }
+    
+    /**
+     * Indicate that the hunter is no longer alive.
+     * It is removed from the field.
+     */
+    public void setDead()
+    {
+        alive = false;
+        if(location != null) {
+            field.clear(location);
+            location = null;
+            field = null;
+        }
+    }
+    
+    private static Location getRandomLocation(List<Location> location){
+		int random = (int) (Math.random()*(location.size() -0));
+		return location.get(random);
 	}
+    
+    /**
+     * Return the hunter's field.
+     * @return Field the hunter's field.
+     */
+    public Field getField()
+    {
+        return field;
+    }   
+	
 
 	public boolean isAlive() {
-		// TODO Auto-generated method stub
-		return false;
+		return alive;
 	}
 
 }

@@ -1,15 +1,8 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  * A graphical view of the simulation grid.
@@ -23,12 +16,7 @@ import javax.swing.JPanel;
  */
 public class SimulatorView extends JFrame
 {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	// Colors used for empty locations.
+    // Colors used for empty locations.
     private static final Color EMPTY_COLOR = Color.white;
 
     // Color used for objects that have no defined color.
@@ -37,6 +25,7 @@ public class SimulatorView extends JFrame
     private final String STEP_PREFIX = "Step: ";
     private final String POPULATION_PREFIX = "Population: ";
     private JLabel stepLabel, population;
+    private JButton oneStep, moreSteps;
     private FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
@@ -49,7 +38,7 @@ public class SimulatorView extends JFrame
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width)
+    public SimulatorView(int height, int width, final Simulator simulator)
     {
         stats = new FieldStats();
         colors = new LinkedHashMap<Class, Color>();
@@ -58,23 +47,53 @@ public class SimulatorView extends JFrame
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
+        JPanel panelleft = new JPanel();
+        oneStep = new JButton("Step 1");
+        moreSteps = new JButton("Step 100");
+        
+        
+        JPanel panelright = new JPanel(new BorderLayout());
+        
         setLocation(100, 50);
         
         fieldView = new FieldView(height, width);
 
         Container contents = getContentPane();
-        contents.add(stepLabel, BorderLayout.NORTH);
-        contents.add(fieldView, BorderLayout.CENTER);
-        contents.add(population, BorderLayout.SOUTH);
+        
+        panelright.add(stepLabel, BorderLayout.NORTH);
+        panelright.add(fieldView, BorderLayout.CENTER);
+        panelright.add(population, BorderLayout.SOUTH);
+        
+        panelleft.add(oneStep, BorderLayout.NORTH);
+        panelleft.add(moreSteps, BorderLayout.SOUTH);
+        
+        contents.add(panelright, BorderLayout.EAST);
+        contents.add(panelleft, BorderLayout.WEST);
+        
         pack();
         setVisible(true);
     }
-    
     /**
      * Define a color to be used for a given class of animal.
      * @param animalClass The animal's Class object.
      * @param color The color to be used for the given class.
      */
+    
+    public JButton getOneStepButton() {
+    	return this.oneStep;
+    }
+    
+    public JButton getMoreStepsButton() {
+    	return this.moreSteps;
+    }
+    public void disableButtons() {
+    	this.oneStep.setEnabled(false);
+    	this.moreSteps.setEnabled(false);
+    }
+    public void enableButtons() {
+    	this.oneStep.setEnabled(true);
+    	this.moreSteps.setEnabled(true);
+    }
     public void setColor(Class animalClass, Color color)
     {
         colors.put(animalClass, color);
@@ -83,7 +102,7 @@ public class SimulatorView extends JFrame
     /**
      * @return The color to be used for a given class of animal.
      */
-    private Color getColor(Class<? extends Object> animalClass)
+    private Color getColor(Class animalClass)
     {
         Color col = colors.get(animalClass);
         if(col == null) {

@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.HashMap;
 
 /**
@@ -63,7 +64,7 @@ public class FieldStats
      * Increment the count for one class of animal.
      * @param animalClass The class of animal to increment.
      */
-    public void incrementCount(Class<? extends Object> animalClass)
+    public void incrementCount(Class animalClass)
     {
         Counter count = counters.get(animalClass);
         if(count == null) {

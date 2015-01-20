@@ -86,7 +86,6 @@ public abstract class Animal implements Actor
     {
         return field;
     }
-    
     /**
      * Increase the age. This could result in the fox's death.
      */

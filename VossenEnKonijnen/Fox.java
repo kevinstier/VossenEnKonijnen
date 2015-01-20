@@ -42,11 +42,11 @@ public class Fox extends Animal
     {
         super(field, location);
         if(randomAge) {
-            setAge(rand.nextInt(MAX_AGE));
+        	setAge(rand.nextInt(MAX_AGE));
             foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
         }
         else {
-            setAge(0);
+        	setAge(0);
             foodLevel = RABBIT_FOOD_VALUE;
         }
     }
@@ -81,7 +81,6 @@ public class Fox extends Animal
         }
     }
 
-    
     /**
      * Make this fox more hungry. This could result in the fox's death.
      */
@@ -119,8 +118,6 @@ public class Fox extends Animal
         return null;
     }
     
-        
-
 	@Override
 	protected int getBreedingAge() {
 		return BREEDING_AGE;
