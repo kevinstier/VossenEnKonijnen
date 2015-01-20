@@ -27,7 +27,6 @@ public class SimulatorView extends JFrame
     private JLabel stepLabel, population;
     private JButton oneStep, moreSteps;
     private FieldView fieldView;
-    private Simulator simulator;
     
     // A map for storing colors for participants in the simulation
     private Map<Class, Color> colors;
@@ -41,7 +40,6 @@ public class SimulatorView extends JFrame
      */
     public SimulatorView(int height, int width, final Simulator simulator)
     {
-    	this.simulator = simulator;
         stats = new FieldStats();
         colors = new LinkedHashMap<Class, Color>();
 
@@ -53,21 +51,6 @@ public class SimulatorView extends JFrame
         oneStep = new JButton("Step 1");
         moreSteps = new JButton("Step 100");
         
-        oneStep.addActionListener(new ActionListener() {
- 
-            public void actionPerformed(ActionEvent e)
-            {
-                simulator.simulateOneStep();
-            }
-        }); 
-        
-        moreSteps.addActionListener(new ActionListener() {
-        	 
-            public void actionPerformed(ActionEvent e)
-            {
-            	simulator.runLongSimulation();
-            }
-        });
         
         JPanel panelright = new JPanel(new BorderLayout());
         
@@ -95,6 +78,15 @@ public class SimulatorView extends JFrame
      * @param animalClass The animal's Class object.
      * @param color The color to be used for the given class.
      */
+    
+    public JButton getOneStepButton() {
+    	return this.oneStep;
+    }
+    
+    public JButton getMoreStepsButton() {
+    	return this.moreSteps;
+    }
+    
     public void setColor(Class animalClass, Color color)
     {
         colors.put(animalClass, color);
