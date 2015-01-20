@@ -25,7 +25,8 @@ public class Simulator
     // The probability that a bear will be created in any given grid position.
     private static final double BEAR_CREATION_PROBABILITY = 0.05;  
     // The maximum amount of hunters that will be created.
-    private static final double HUNTER_CREATION_PROBABILITY = 0.08;  
+    private static final double HUNTER_CREATION_PROBABILITY = 0.03;  
+    private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
 
     
     // List of animals in the field.
@@ -67,7 +68,7 @@ public class Simulator
         view.setColor(Rabbit.class, Color.orange);
         view.setColor(Fox.class, Color.blue);
         view.setColor(Bear.class, Color.black);
-        view.setColor(Hunter.class, Color.green);
+        view.setColor(Hunter.class, Color.red);
         
         // Setup a valid starting point.
         reset();
@@ -144,6 +145,7 @@ public class Simulator
     {
         Random rand = Randomizer.getRandom();
         field.clear();
+        int huntersCreated = 0;
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
             	if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
@@ -156,7 +158,8 @@ public class Simulator
                     Rabbit rabbit = new Rabbit(true, field, location);
                     actors.add(rabbit);
                 }
-                else if(rand.nextDouble() <= HUNTER_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= HUNTER_CREATION_PROBABILITY && huntersCreated < MAXIUM_AMOUNT_OF_HUNTERS) {
+                	huntersCreated++;
                     Location location = new Location(row, col);
                     Hunter hunter = new Hunter(field, location);
                     actors.add(hunter);

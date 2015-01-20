@@ -16,7 +16,7 @@ public class Bear extends Animal
     // The age at which a Bear can start to breed.
     private static final int BREEDING_AGE = 4;
     // The age to which a Bear can live.
-    private static final int MAX_AGE = 37;
+    private static final int MAX_AGE = 40;
     // The likelihood of a Bear breeding.
     private static final double BREEDING_PROBABILITY = 0.02;
     // The maximum number of births.
