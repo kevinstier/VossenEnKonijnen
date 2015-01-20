@@ -24,6 +24,9 @@ public class Simulator
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;   
     // The probability that a bear will be created in any given grid position.
     private static final double BEAR_CREATION_PROBABILITY = 0.01;  
+ // The probability that a hunter will be created in any given grid position.
+    private static final double HUNTER_CREATION_PROBABILITY = 0.03;  
+    private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
 
     // List of animals in the field.
     private List<Actor> actors;
@@ -60,10 +63,11 @@ public class Simulator
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width, this);
+        view = new SimulatorView(depth, width);
         view.setColor(Rabbit.class, Color.orange);
         view.setColor(Fox.class, Color.blue);
         view.setColor(Bear.class, Color.black);
+        view.setColor(Hunter.class, Color.red);
         
         // Setup a valid starting point.
         reset();
@@ -140,6 +144,7 @@ public class Simulator
     {
         Random rand = Randomizer.getRandom();
         field.clear();
+        int huntersCreated = 0;
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
                 if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
@@ -156,6 +161,12 @@ public class Simulator
                     Location location = new Location(row, col);
                     Bear bear = new Bear(true, field, location);
                     actors.add(bear);
+                }
+                else if(rand.nextDouble() <= HUNTER_CREATION_PROBABILITY && huntersCreated < MAXIUM_AMOUNT_OF_HUNTERS) {
+                	huntersCreated++;
+                    Location location = new Location(row, col);
+                    Hunter hunter = new Hunter(field, location);
+                    actors.add(hunter);
                 }
                 // else leave the location empty.
             }

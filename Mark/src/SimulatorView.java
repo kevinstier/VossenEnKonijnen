@@ -38,7 +38,7 @@ public class SimulatorView extends JFrame
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width, final Simulator simulator)
+    public SimulatorView(int height, int width)
     {
         stats = new FieldStats();
         colors = new LinkedHashMap<Class, Color>();
