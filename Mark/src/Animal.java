@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 
 /**
  * A class representing shared characteristics of animals.
@@ -6,14 +7,19 @@ import java.util.List;
  * @author David J. Barnes and Michael Kölling
  * @version 2011.07.31
  */
-public abstract class Animal
+public abstract class Animal implements Actor
 {
-    // Whether the animal is alive or not.
-    private boolean alive;
+	// Whether the animal is alive or not.
+    protected boolean alive = true;
     // The animal's field.
     private Field field;
     // The animal's position in the field.
     private Location location;
+    // The animal's age
+    private int age;
+ // A shared random number generator to control breeding.
+    private static final Random rand = Randomizer.getRandom();
+    
     
     /**
      * Create a new animal at location in field.
@@ -33,16 +39,8 @@ public abstract class Animal
      * whatever it wants/needs to do.
      * @param newAnimals A list to receive newly born animals.
      */
-    abstract public void act(List<Animal> newAnimals);
+    abstract public void act(List<Actor> newActors);
 
-    /**
-     * Check whether the animal is alive or not.
-     * @return true if the animal is still alive.
-     */
-    protected boolean isAlive()
-    {
-        return alive;
-    }
 
     /**
      * Indicate that the animal is no longer alive.
@@ -88,4 +86,113 @@ public abstract class Animal
     {
         return field;
     }
+    /**
+     * Increase the age. This could result in the fox's death.
+     */
+    protected void incrementAge()
+    {
+        age++;
+        if(age > getMaxAge()) {
+            setDead();
+        }
+    }
+    
+    /**
+     * Generate a number representing the number of births,
+     * if it can breed.
+     * @return The number of births (may be zero).
+     */
+    protected int breed()
+    {
+        int births = 0;
+        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
+            births = rand.nextInt(getMaxLitterSize()) + 1;
+        }
+        return births;
+    }
+
+    
+    /**
+     * Een dier kan zich voortplanten als het de 
+     * voortplantingsleeftijd heeft bereikt.
+     * @return true als het dier zich kan voortplanten
+     */
+    public boolean canBreed()
+    {
+    	return age >= getBreedingAge();
+    }
+    
+    /**
+     * Check whether or not this fox is to give birth at this step.
+     * New births will be made into free adjacent locations.
+     * @param newFoxes A list to return newly born foxes.
+     */
+    protected void giveBirth(List<Actor> newAnimals)
+    {
+        // New animals are born into adjacent locations.
+        // Get a list of adjacent free locations.
+    	Animal animal = this;
+    	Animal nieuw = null;
+        Field field = getField();
+        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        int births = breed();
+        for(int b = 0; b < births && free.size() > 0; b++) {
+            Location loc = free.remove(0);
+            if (animal instanceof Rabbit) {
+            	nieuw = new Rabbit(false, field, loc);
+            }
+            else if (animal instanceof Fox) {
+            	nieuw = new Fox(false, field, loc);
+            }
+            else if (animal instanceof Bear) {
+            	nieuw = new Bear(false, field, loc);
+            }
+            newAnimals.add(nieuw);
+        }
+    }
+    
+    /**
+	 * Retourneer de voortplantingskans van dit dier.
+	 */
+	abstract protected double getBreedingProbability();
+
+	/**
+	 * Returns the maximum amount of offspring an animal can have.
+	 */
+	abstract protected int getMaxLitterSize();
+
+    
+    /**
+     * Retourneer de voortplantingsleeftijd van dit dier.
+     * @return De voortplantingsleeftijd van dit dier.
+     */
+    abstract protected int getBreedingAge();
+    
+    /**
+     * Retourneer de maximum leeftijd van dit dier.
+     * @return De maximum leeftijd van dit dier.
+     */
+    abstract protected int getMaxAge();
+
+    /**
+     * Return the animal's age.
+     * @return The animal's age.
+     */
+	public int getAge() {
+		return age;
+	}
+
+	/**
+     * Set the animal's age.
+     * @param The animal's age.
+     */
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public boolean isAlive() {
+		return false;
+	}
+
+
 }

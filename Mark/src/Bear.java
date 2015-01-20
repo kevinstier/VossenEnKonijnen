@@ -3,67 +3,67 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * A simple model of a fox.
- * Foxes age, move, eat rabbits, and die.
+ * A simple model of a Bear.
+ * Bears age, move, eat rabbits, and die.
  * 
- * @author David J. Barnes and Michael KÃ¶lling
+ * @author David J. Barnes and Michael Kölling
  * @version 2011.07.31
  */
-public class Fox extends Animal
+public class Bear extends Animal
 {
-    // Characteristics shared by all foxes (class variables).
+    // Characteristics shared by all Bears (class variables).
     
-    // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 15;
-    // The age to which a fox can live.
-    private static final int MAX_AGE = 150;
-    // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
+    // The age at which a Bear can start to breed.
+    private static final int BREEDING_AGE = 4;
+    // The age to which a Bear can live.
+    private static final int MAX_AGE = 50;
+    // The likelihood of a Bear breeding.
+    private static final double BREEDING_PROBABILITY = 0.25;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single rabbit. In effect, this is the
-    // number of steps a fox can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 9;
+    // number of steps a Bear can go before it has to eat again.
+    private static final int FOOD_VALUE = 11;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
-    // The fox's food level, which is increased by eating rabbits.
+    // The Bear's food level, which is increased by eating rabbits.
     private int foodLevel;
 
     /**
-     * Create a fox. A fox can be created as a new born (age zero
+     * Create a Bear. A Bear can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
      * 
-     * @param randomAge If true, the fox will have random age and hunger level.
+     * @param randomAge If true, the Bear will have random age and hunger level.
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Fox(boolean randomAge, Field field, Location location)
+    public Bear(boolean randomAge, Field field, Location location)
     {
         super(field, location);
         if(randomAge) {
-        	setAge(rand.nextInt(MAX_AGE));
-            foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
+            setAge(rand.nextInt(MAX_AGE));
+            foodLevel = rand.nextInt(FOOD_VALUE);
         }
         else {
-        	setAge(0);
-            foodLevel = RABBIT_FOOD_VALUE;
+            setAge(0);
+            foodLevel = FOOD_VALUE;
         }
     }
     
     /**
-     * This is what the fox does most of the time: it hunts for
+     * This is what the Bear does most of the time: it hunts for
      * rabbits. In the process, it might breed, die of hunger,
      * or die of old age.
      * @param field The field currently occupied.
-     * @param newFoxes A list to return newly born foxes.
+     * @param newBeares A list to return newly born Bears.
      */
-    public void act(List<Actor> newFoxes)
+    public void act(List<Actor> newBears)
     {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newFoxes);            
+            giveBirth(newBears);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -81,8 +81,9 @@ public class Fox extends Animal
         }
     }
 
+    
     /**
-     * Make this fox more hungry. This could result in the fox's death.
+     * Make this Bear more hungry. This could result in the Bear's death.
      */
     private void incrementHunger()
     {
@@ -105,11 +106,20 @@ public class Fox extends Animal
         while(it.hasNext()) {
             Location where = it.next();
             Object animal = field.getObjectAt(where);
+            if(animal instanceof Fox) {
+				Fox fox = (Fox) animal;
+				if(fox.isAlive()) {
+					fox.setDead();
+					foodLevel = FOOD_VALUE;
+					// Remove the dead fox from the field.
+					return where;
+				}
+            }
             if(animal instanceof Rabbit) {
                 Rabbit rabbit = (Rabbit) animal;
                 if(rabbit.isAlive()) { 
                     rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
+                    foodLevel = FOOD_VALUE;
                     // Remove the dead rabbit from the field.
                     return where;
                 }
@@ -118,6 +128,7 @@ public class Fox extends Animal
         return null;
     }
     
+
 	@Override
 	protected int getBreedingAge() {
 		return BREEDING_AGE;
