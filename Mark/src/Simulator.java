@@ -25,7 +25,7 @@ public class Simulator
     // The probability that a bear will be created in any given grid position.
     private static final double BEAR_CREATION_PROBABILITY = 0.01;  
  // The probability that a hunter will be created in any given grid position.
-    private static final double HUNTER_CREATION_PROBABILITY = 0.03;  
+    private static final double HUNTER_CREATION_PROBABILITY = 0.01;  
     private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
 
     // List of animals in the field.
@@ -36,7 +36,8 @@ public class Simulator
     private int step;
     // A graphical view of the simulation.
     private SimulatorView view;
-    
+    // A pie chart of the simulation.
+    private PieChartView pieView;
     /**
      * Construct a simulation field with default size.
      */
@@ -62,6 +63,8 @@ public class Simulator
         actors = new ArrayList<Actor>();
         field = new Field(depth, width);
 
+        pieView = new PieChartView();
+        
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
         view.setColor(Rabbit.class, Color.orange);
@@ -118,6 +121,7 @@ public class Simulator
         actors.addAll(newActors);
 
         view.showStatus(step, field);
+        pieView.updatePieChart(actors, view);
     }
     
     public SimulatorView getSimulatorView() {
@@ -135,6 +139,7 @@ public class Simulator
         
         // Show the starting state in the view.
         view.showStatus(step, field);
+        pieView.updatePieChart(actors, view);
     }
     
     /**
