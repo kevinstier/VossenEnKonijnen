@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=newActors
+comment0.target=void\ act(java.util.List)
+comment0.text=\r\n\ Voer\ het\ gebruikelijke\ gedrag\ van\ de\ deelnemer\ uit.\r\n\ @param\ newActors\ Een\ lijst\ waarin\ zojuist\ gemaakte\r\n\ deelnemers\ worden\ opgeslagen.\r\n
+comment1.params=
+comment1.target=boolean\ isAlive()
+comment1.text=\r\n\ Is\ de\ deelnemer\ nog\ steeds\ actief?\r\n\ @return\ true\ als\ de\ deelnemer\ nog\ actief\ is,\ ander\ false.\r\n
+numComments=2
