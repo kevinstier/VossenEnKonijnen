@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -42,6 +43,7 @@ public class SimulatorView extends JFrame
     {
         stats = new FieldStats();
         colors = new LinkedHashMap<Class, Color>();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setTitle("Fox and Rabbit Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);

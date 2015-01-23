@@ -24,6 +24,13 @@ public class PieChartView extends JFrame {
 	}
 	
 	public void updatePieChart(List<Actor> actors, SimulatorView view) {
+		
+		Slice[] slices = PieChartView.getSlices(actors, view);
+		
+		pieChart.updateChart(slices);
+	}
+	
+	public static Slice[] getSlices(List<Actor> actors, SimulatorView view) {
 		HashMap<String, ArrayList<Actor>> orderedList = new HashMap<String, ArrayList<Actor>>();
 		ArrayList<String> reminder = new ArrayList<String>();
 		
@@ -47,7 +54,6 @@ public class PieChartView extends JFrame {
 			int count = orderedList.get(reminder.get(i)).size();
 			slices[i] = new Slice(count, view.getColor(orderedList.get(reminder.get(i)).get(0).getClass()));
 		}
-		
-		pieChart.updateChart(slices);
+		return slices;
 	}
 }

@@ -12,6 +12,12 @@ class Slice {
       this.value = value;
       this.color = color;
    }
+   public double getValue() {
+	   return this.value;
+   }
+   public Color getColor() {
+	   return this.color;
+   }
 }
 class PieChart3 extends JComponent {
 	Graphics graphics;
