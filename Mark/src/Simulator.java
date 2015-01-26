@@ -26,7 +26,7 @@ public class Simulator
     private static final double BEAR_CREATION_PROBABILITY = 0.01;  
  // The probability that a hunter will be created in any given grid position.
     private static final double HUNTER_CREATION_PROBABILITY = 0.01;  
-    private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
+    private static final int MAXIUM_AMOUNT_OF_HUNTERS = 3000;  
 
     // List of animals in the field.
     private List<Actor> actors;
