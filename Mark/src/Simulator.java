@@ -38,8 +38,10 @@ public class Simulator
     private SimulatorView view;
     // A pie chart of the simulation.
     private PieChartView pieView;
- // A pie chart of the simulation.
+    // A pie chart of the simulation.
     private GraphView graphView;
+    // A bar view of the simulation.
+    private BarView barView;
     /**
      * Construct a simulation field with default size.
      */
@@ -67,6 +69,7 @@ public class Simulator
 
         pieView = new PieChartView();
         graphView = new GraphView(500, 300, 100);
+        barView = new BarView(view);
         
         
         // Create a view of the state of each location in the field.
@@ -125,8 +128,9 @@ public class Simulator
         actors.addAll(newActors);
 
         view.showStatus(step, field);
-        pieView.updatePieChart(actors, view);
+        Slice[] slices = pieView.updatePieChart(actors, view);
         graphView.showStatus(step, actors, view);
+        barView.update(slices);
     }
     
     public SimulatorView getSimulatorView() {

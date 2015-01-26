@@ -23,11 +23,12 @@ public class PieChartView extends JFrame {
         setVisible(true);
 	}
 	
-	public void updatePieChart(List<Actor> actors, SimulatorView view) {
+	public Slice[] updatePieChart(List<Actor> actors, SimulatorView view) {
 		
 		Slice[] slices = PieChartView.getSlices(actors, view);
 		
 		pieChart.updateChart(slices);
+		return slices;
 	}
 	
 	public static Slice[] getSlices(List<Actor> actors, SimulatorView view) {
