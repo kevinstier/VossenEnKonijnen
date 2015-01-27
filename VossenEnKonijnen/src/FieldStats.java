@@ -11,6 +11,7 @@ import java.util.HashMap;
  */
 public class FieldStats
 {
+	TextView textView;
     // Counters for each type of entity (fox, rabbit, etc.) in the simulation.
     private HashMap<Class, Counter> counters;
     // Whether the counters are currently up to date.
@@ -43,6 +44,7 @@ public class FieldStats
             buffer.append(": ");
             buffer.append(info.getCount());
             buffer.append(' ');
+            textView.println(info.getName() + ": " + info.getCount());
         }
         return buffer.toString();
     }
