@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,10 +39,11 @@ public class SimulatorView extends JFrame
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width, final Simulator simulator)
+    public SimulatorView(int height, int width)
     {
         stats = new FieldStats();
         colors = new LinkedHashMap<Class, Color>();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setTitle("Fox and Rabbit Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
@@ -102,7 +104,7 @@ public class SimulatorView extends JFrame
     /**
      * @return The color to be used for a given class of animal.
      */
-    private Color getColor(Class animalClass)
+    public Color getColor(Class animalClass)
     {
         Color col = colors.get(animalClass);
         if(col == null) {
