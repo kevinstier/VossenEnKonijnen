@@ -48,7 +48,7 @@ public class FieldStats
         textView.println("Step: " + step + "\n");
         for(Class key : counters.keySet()) {
             Counter info = counters.get(key);
-            buffer.append("\u001B" + info.getName());
+            buffer.append(info.getName());
             buffer.append(": ");
             buffer.append(info.getCount());
             buffer.append(' ');
