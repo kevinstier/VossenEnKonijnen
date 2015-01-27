@@ -30,7 +30,7 @@ public class BarView extends JFrame {
 class BarGraph extends JComponent {
 	Graphics g;
 	SimulatorView view;
-	Slice[] slices;
+	Slice[] slices = null;
 	
 	public void update(Slice[] slices) {
 		this.slices = slices;
@@ -43,8 +43,10 @@ class BarGraph extends JComponent {
 	}
 	
 	public void paint(Graphics g) {
-	  this.g = g;
-      drawBars((Graphics2D) g, getBounds(), slices);
+		if(slices != null) {
+			  this.g = g;
+		      drawBars((Graphics2D) g, getBounds(), slices);
+			}
     }
 	
 	void drawBars(Graphics2D g, Rectangle area, Slice[] slices) {
