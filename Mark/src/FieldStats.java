@@ -6,7 +6,7 @@ import java.util.HashMap;
  * of a field. It is flexible: it will create and maintain a counter 
  * for any class of object that is found within the field.
  * 
- * @author David J. Barnes and Michael KÃ¶lling
+ * @author David J. Barnes and Michael Kölling
  * @version 2011.07.31
  */
 public class FieldStats
@@ -15,6 +15,7 @@ public class FieldStats
     private HashMap<Class, Counter> counters;
     // Whether the counters are currently up to date.
     private boolean countsValid;
+    private TextView textView;
 
     /**
      * Construct a FieldStats object.
@@ -25,6 +26,7 @@ public class FieldStats
         // we might find
         counters = new HashMap<Class, Counter>();
         countsValid = true;
+        textView = new TextView();
     }
 
     /**
@@ -33,6 +35,8 @@ public class FieldStats
      */
     public String getPopulationDetails(Field field)
     {
+    	
+    	
         StringBuffer buffer = new StringBuffer();
         if(!countsValid) {
             generateCounts(field);
@@ -43,7 +47,9 @@ public class FieldStats
             buffer.append(": ");
             buffer.append(info.getCount());
             buffer.append(' ');
+            textView.println(info.getName() + ": " + info.getCount());
         }
+        textView.println("------------------");
         return buffer.toString();
     }
     
