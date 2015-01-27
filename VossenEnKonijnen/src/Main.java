@@ -9,6 +9,7 @@ public class Main {
 		
 		JButton oneStep = simulator.getSimulatorView().getOneStepButton();
 		JButton moreSteps = simulator.getSimulatorView().getMoreStepsButton();
+		JButton reset = simulator.getSimulatorView().getResetButton();
 		
 		oneStep.addActionListener(new ActionListener() {
 			
@@ -29,6 +30,13 @@ public class Main {
 					}
 				});
 				moreStepsThread.start();
+			}
+		});
+		
+		reset.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent evt) {
+				simulator.reset();
 			}
 		});
 	}

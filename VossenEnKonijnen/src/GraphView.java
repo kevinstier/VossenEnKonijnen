@@ -101,7 +101,6 @@ public class GraphView
     private JFrame makeFrame(int width, int height, int startMax)
     {
         JFrame frame = new JFrame("Graph View");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Container contentPane = frame.getContentPane();
 
