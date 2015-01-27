@@ -48,7 +48,7 @@ public class TextView
 	 * @param str
 	 */
 	public void println(String str) {
-		print(str + "\n");
+		print(str + " ");
 	}
 	
 	/**

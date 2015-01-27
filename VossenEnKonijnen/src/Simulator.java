@@ -135,6 +135,7 @@ public class Simulator
         Slice[] slices = pieView.updatePieChart(actors, view);
         graphView.showStatus(step, actors, view);
         barView.update(slices);
+        
     }
     
     public SimulatorView getSimulatorView() {

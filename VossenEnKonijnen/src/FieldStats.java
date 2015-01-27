@@ -16,6 +16,7 @@ public class FieldStats
     private HashMap<Class, Counter> counters;
     // Whether the counters are currently up to date.
     private boolean countsValid;
+    private int step = 0;
 
     /**
      * Construct a FieldStats object.
@@ -28,6 +29,11 @@ public class FieldStats
         countsValid = true;
         textView = new TextView();
     }
+    
+    public void setStep (int step)
+    {
+    	this.step = step;
+    }
 
     /**
      * Get details of what is in the field.
@@ -39,6 +45,7 @@ public class FieldStats
         if(!countsValid) {
             generateCounts(field);
         }
+        textView.println("Step: " + step + "\n");
         for(Class key : counters.keySet()) {
             Counter info = counters.get(key);
             buffer.append(info.getName());
@@ -47,7 +54,8 @@ public class FieldStats
             buffer.append(' ');
             textView.println(info.getName() + ": " + info.getCount());
         }
-        textView.println("------------------");
+        textView.println("\n------------------\n");
+        step++;
         return buffer.toString();
     }
     
