@@ -4,7 +4,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;  
 import javax.swing.text.DefaultCaret;
   
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;  
   
@@ -17,11 +16,6 @@ public class TextView
 	{  
 		//Create JTextArea without initial text  
 		textArea1=new JTextArea();  
-		textArea1.setEditable(true);
-		textArea1.setLineWrap(true);
-		textArea1.setFont(new Font("Courier new", Font.PLAIN, 12));
-		DefaultCaret caret = (DefaultCaret) textArea1.getCaret();
-		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		  
 		//Create a JFrame with title ( Add JTextArea into JFrame )  
 		JFrame frame=new JFrame("TextView");  
@@ -31,15 +25,22 @@ public class TextView
 		  
 		//Add first JTextArea into JFrame  
 		JScrollPane sp = new JScrollPane(textArea1); 
-		frame.add(sp, BorderLayout.CENTER);   
-		   
+		frame.add(sp);   
+		  
+		//Set default close operation for JFrame  
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+		  
 		//Set JFrame size  
 		frame.setSize(400,500);  
 		  
 		//Make JFrame visible. So we can see it.  
 		frame.setVisible(true);  
 		
-		
+		textArea1.setEditable(false);
+		textArea1.setLineWrap(true);
+		textArea1.setFont(new Font("Courier new", Font.PLAIN, 12));
+		DefaultCaret caret = (DefaultCaret) textArea1.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 	}  
 	
 	/**
@@ -64,7 +65,7 @@ public class TextView
 	
 	public void reset()
 	{
-		this.textArea1.setText(null);
+		textArea1.setText(null);
 	}
 
 }  

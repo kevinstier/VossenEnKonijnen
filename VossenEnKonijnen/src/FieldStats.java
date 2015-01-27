@@ -65,7 +65,6 @@ public class FieldStats
      */
     public void reset()
     {
-    	textView.reset();
         countsValid = false;
         for(Class key : counters.keySet()) {
             Counter count = counters.get(key);

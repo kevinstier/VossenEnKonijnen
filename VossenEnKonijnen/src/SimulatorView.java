@@ -26,7 +26,7 @@ public class SimulatorView extends JFrame
     private final String STEP_PREFIX = "Step: ";
     private final String POPULATION_PREFIX = "Population: ";
     private JLabel stepLabel, population;
-    private JButton oneStep, moreSteps, reset;
+    private JButton oneStep, moreSteps;
     private FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
@@ -54,7 +54,6 @@ public class SimulatorView extends JFrame
         JPanel panelleft = new JPanel();
         oneStep = new JButton("Step 1");
         moreSteps = new JButton("Step 100");
-        reset = new JButton("Reset");
         
         
         JPanel panelright = new JPanel(new BorderLayout());
@@ -69,9 +68,8 @@ public class SimulatorView extends JFrame
         panelright.add(fieldView, BorderLayout.CENTER);
         panelright.add(population, BorderLayout.SOUTH);
         
-        panelleft.add(oneStep, BorderLayout.WEST);
-        panelleft.add(moreSteps, BorderLayout.EAST);
-        panelleft.add(reset, BorderLayout.SOUTH);
+        panelleft.add(oneStep, BorderLayout.NORTH);
+        panelleft.add(moreSteps, BorderLayout.SOUTH);
         
         contents.add(panelright, BorderLayout.EAST);
         contents.add(panelleft, BorderLayout.WEST);
@@ -88,22 +86,17 @@ public class SimulatorView extends JFrame
     public JButton getOneStepButton() {
     	return this.oneStep;
     }
+    
     public JButton getMoreStepsButton() {
     	return this.moreSteps;
     }
-    public JButton getResetButton() {
-    	return this.reset;
-    }
-    
     public void disableButtons() {
     	this.oneStep.setEnabled(false);
     	this.moreSteps.setEnabled(false);
-    	this.reset.setEnabled(false);
     }
     public void enableButtons() {
     	this.oneStep.setEnabled(true);
     	this.moreSteps.setEnabled(true);
-    	this.reset.setEnabled(true);
     }
     public void setColor(Class animalClass, Color color)
     {
@@ -145,7 +138,7 @@ public class SimulatorView extends JFrame
             for(int col = 0; col < field.getWidth(); col++) {
                 Object animal = field.getObjectAt(row, col);
                 if(animal != null) {
-                    //stats.incrementCount(animal.getClass());
+                    stats.incrementCount(animal.getClass());
                     fieldView.drawMark(col, row, getColor(animal.getClass()));
                 }
                 else {
@@ -167,7 +160,6 @@ public class SimulatorView extends JFrame
     {
         return stats.isViable(field);
     }
-    
     
     /**
      * Provide a graphical view of a rectangular field. This is 
