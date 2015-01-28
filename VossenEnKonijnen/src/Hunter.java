@@ -8,6 +8,10 @@ public class Hunter implements Actor {
     private Field field;
     // The hunter's position in the field.
     private Location location;
+    private int limit = 0;
+    private final int BULLET_LIMIT = 7;
+    private int wait = 0;
+    private final int WAIT_LIMIT = 3;
 
 	/**
      * Create a hunter. 
@@ -38,16 +42,9 @@ public class Hunter implements Actor {
             }
             
             setLocation(newLocation);
-            
         }
     }
     
-    /**
-     * Look for animals adjacent to the current location.
-     * Only the first live rabbit is shot.
-     * @return 
-     * @return Where animal was found, or null if it wasn't.
-     */
     private void setLocation(Location newLocation)
     {
         if(location != null) {
@@ -57,14 +54,23 @@ public class Hunter implements Actor {
         field.place(this, newLocation);
     }
     
+    /**
+     * Look for animals adjacent to the current location.
+     * Only the first live rabbit is shot.
+     * @return 
+     * @return Where animal was found, or null if it wasn't.
+     */
     private Location findAnimal()
     {
         Field field = this.field;
         List<Location> adjacent = field.adjacentLocations(this.location);
         Iterator<Location> it = adjacent.iterator();
+        if (wait == 0) {
+        if (limit < BULLET_LIMIT) {
         while(it.hasNext()) {
             Location where = it.next();
             Object animal = field.getObjectAt(where);
+            this.limit++;
             if(animal instanceof Rabbit) {
                 Rabbit rabbit = (Rabbit) animal;
                 if(rabbit.isAlive()) { 
@@ -92,7 +98,19 @@ public class Hunter implements Actor {
         }
         return null;
     }
-	
+        this.wait = 1;
+        this.limit = 0;
+        return null;
+        
+    } else if (wait == WAIT_LIMIT) {
+    	this.wait = 0;
+    	return null;
+    }
+        wait++;
+        return null;
+    }
+        
+    
 
 	public boolean isAlive() {
 		// TODO Auto-generated method stub
