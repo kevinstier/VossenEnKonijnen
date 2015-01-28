@@ -2,7 +2,11 @@ import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.awt.BorderLayout;
 import java.awt.Color;
+
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field
@@ -65,13 +69,13 @@ public class Simulator
             width = DEFAULT_WIDTH;
         }
         
+        
         actors = new ArrayList<Actor>();
         field = new Field(depth, width);
 
         pieView = new PieChartView();
         graphView = new GraphView(500, 300, 100);
         barView = new BarView(view);
-        
         
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);

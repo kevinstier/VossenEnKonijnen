@@ -12,11 +12,11 @@ public class BarView extends JFrame {
 	BarGraph barGraph;
 	
 	public BarView(SimulatorView view) {
-		setTitle("BarView");
+		super("BarView");
 		barGraph = new BarGraph(view);
 		barGraph.setPreferredSize(new Dimension(400,800));
 		Container contents = getContentPane();
-		contents.add(barGraph);
+		super.add(barGraph);
 		pack();
 		setVisible(true);
 		
