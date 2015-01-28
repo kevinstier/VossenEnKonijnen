@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.util.LinkedHashMap;
@@ -25,9 +27,11 @@ public class SimulatorView extends JFrame
 
     private final String STEP_PREFIX = "Step: ";
     private final String POPULATION_PREFIX = "Population: ";
-    private JLabel stepLabel, population;
+    private JLabel stepLabel, population, legend;
     private JButton oneStep, moreSteps;
     private FieldView fieldView;
+    private Icon logoImage;
+    private Container contents;
     
     // A map for storing colors for participants in the simulation
     private Map<Class, Color> colors;
@@ -50,11 +54,16 @@ public class SimulatorView extends JFrame
         setTitle("Fox and Rabbit Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
+        logoImage = new ImageIcon(Simulator.class.getResource("/Legenda.png"));
+        legend = new JLabel(logoImage, JLabel.CENTER);
         
-        JPanel panelleft = new JPanel();
+        JPanel panelleft = new JPanel(new BorderLayout());
         oneStep = new JButton("Step 1");
         moreSteps = new JButton("Step 100");
+        JPanel steps = new JPanel();
         
+        steps.add(oneStep, BorderLayout.NORTH);
+        steps.add(moreSteps, BorderLayout.SOUTH);
         
         JPanel panelright = new JPanel(new BorderLayout());
         
@@ -62,14 +71,14 @@ public class SimulatorView extends JFrame
         
         fieldView = new FieldView(height, width);
 
-        Container contents = getContentPane();
+        contents = getContentPane();
         
         panelright.add(stepLabel, BorderLayout.NORTH);
         panelright.add(fieldView, BorderLayout.CENTER);
         panelright.add(population, BorderLayout.SOUTH);
         
-        panelleft.add(oneStep, BorderLayout.NORTH);
-        panelleft.add(moreSteps, BorderLayout.SOUTH);
+        panelleft.add(steps, BorderLayout.NORTH);
+        panelleft.add(legend, BorderLayout.SOUTH);
         
         contents.add(panelright, BorderLayout.EAST);
         contents.add(panelleft, BorderLayout.WEST);

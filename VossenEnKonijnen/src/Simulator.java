@@ -42,8 +42,6 @@ public class Simulator
     private GraphView graphView;
     // A bar view of the simulation.
     private BarView barView;
-    // A text view of the simulation.
-    private TextView textView;
     
     /**
      * Construct a simulation field with default size.
@@ -73,7 +71,6 @@ public class Simulator
         pieView = new PieChartView();
         graphView = new GraphView(500, 300, 100);
         barView = new BarView(view);
-        textView = new TextView();
         
         
         // Create a view of the state of each location in the field.
@@ -155,7 +152,6 @@ public class Simulator
         view.showStatus(step, field);
         pieView.updatePieChart(actors, view);
         graphView.showStatus(step, actors, view);
-        textView.reset();
     }
     
     /**
