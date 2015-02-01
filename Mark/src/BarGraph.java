@@ -9,7 +9,6 @@ import javax.swing.*;
 
 public class BarGraph extends JComponent {
 	Graphics g;
-	SimulatorView view;
 	Slice[] slices = null;
 	
 	public void update(Slice[] slices) {
@@ -17,10 +16,7 @@ public class BarGraph extends JComponent {
 		this.repaint();
 	}
 	
-	public BarGraph(SimulatorView view) {
-		this.view = view;
-		
-	}
+	public BarGraph() {}
 	
 	public void paint(Graphics g) {
 		if(slices != null) {

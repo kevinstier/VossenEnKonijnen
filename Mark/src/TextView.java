@@ -1,4 +1,5 @@
 import javax.swing.JFrame;  
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;  
 import javax.swing.text.DefaultCaret;
@@ -7,7 +8,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;  
   
-public class TextView extends JFrame
+public class TextView extends JPanel
 {
 
 	JTextArea textArea1;
@@ -21,13 +22,11 @@ public class TextView extends JFrame
 		  
 		//Set JFrame layout  
 		setLayout(new GridLayout());  
-		Container content = getContentPane();
 		//Add first JTextArea into JFrame  
 		JScrollPane sp = new JScrollPane(textArea1); 
-		content.add(sp);   
+		add(sp);   
 		  
 		//Set default close operation for JFrame  
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 		  
 		//Set JFrame size  
 		setSize(400,500);  

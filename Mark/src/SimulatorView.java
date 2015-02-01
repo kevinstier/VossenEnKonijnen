@@ -42,7 +42,7 @@ public class SimulatorView extends JFrame
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width, FieldStats fieldStats)
+    public SimulatorView(int height, int width, FieldStats fieldStats, MonitorView monitorView, TextView textView)
     {
         stats = fieldStats;
         colors = new LinkedHashMap<Class, Color>();
@@ -100,9 +100,22 @@ public class SimulatorView extends JFrame
 
         contents = getContentPane();
         
-        panelright.add(stepLabel, BorderLayout.NORTH);
-        panelright.add(fieldView, BorderLayout.CENTER);
-        panelright.add(population, BorderLayout.SOUTH);
+        JPanel fieldPanel = new JPanel(new BorderLayout());
+        JTabbedPane tabbedPane = new JTabbedPane();
+        
+        fieldPanel.add(stepLabel, BorderLayout.NORTH);
+        fieldPanel.add(fieldView, BorderLayout.CENTER);
+        fieldPanel.add(population, BorderLayout.SOUTH);
+        
+        monitorView.setPreferredSize(new Dimension(150,320));
+        
+        tabbedPane.addTab("Field", fieldPanel);
+        tabbedPane.addTab("Text", textView);
+        tabbedPane.addTab("Graph", monitorView);
+        
+        panelright.setLayout(new BorderLayout());
+        
+        panelright.add(tabbedPane);
         
         panelleft.add(steps, BorderLayout.NORTH);
         //panelleft.add(legend, BorderLayout.SOUTH);
@@ -143,13 +156,24 @@ public class SimulatorView extends JFrame
     	this.reset.setEnabled(true);
     }
     
-    public Color getColor(Object animal) {
+    public static Color getColor(Object animal) {
     	if(animal instanceof Bear || animal instanceof Fox || animal instanceof Rabbit) {
             Animal a = (Animal) animal;
             return a.getColor();
         } else if(animal instanceof Hunter) {
         	Hunter h = (Hunter) animal;
         	return h.getColor();
+        }
+		return null;
+    }
+    
+    public static Color getOfficialColor(Object animal) {
+    	if(animal instanceof Bear || animal instanceof Fox || animal instanceof Rabbit) {
+            Animal a = (Animal) animal;
+            return a.getColor();
+        } else if(animal instanceof Hunter) {
+        	Hunter h = (Hunter) animal;
+        	return h.getOfficialColor();
         }
 		return null;
     }

@@ -70,9 +70,12 @@ public class Simulator
         
         // Create a view of the state of each location in the field.
         stats = new FieldStats();
-        view = new SimulatorView(depth, width, stats);
         
-        monitorView = new MonitorView(view);
+        monitorView = new MonitorView();
+        TextView textView = stats.getTextView();
+        
+        view = new SimulatorView(depth, width, stats, monitorView, textView);
+        
         
         // Setup a valid starting point.
         reset();

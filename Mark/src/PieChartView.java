@@ -25,13 +25,13 @@ public class PieChartView extends JFrame {
 	
 	public Slice[] updatePieChart(List<Actor> actors, SimulatorView view) {
 		
-		Slice[] slices = PieChartView.getSlices(actors, view);
+		Slice[] slices = PieChartView.getSlices(actors, view, true);
 		
 		pieChart.updateChart(slices);
 		return slices;
 	}
 	
-	public static Slice[] getSlices(List<Actor> actors, SimulatorView view) {
+	public static Slice[] getSlices(List<Actor> actors, SimulatorView view, boolean official) {
 		HashMap<String, ArrayList<Actor>> orderedList = new HashMap<String, ArrayList<Actor>>();
 		ArrayList<String> reminder = new ArrayList<String>();
 		
@@ -53,7 +53,11 @@ public class PieChartView extends JFrame {
 		Collections.sort(reminder);
 		for(int i = 0; i < reminder.size(); i++) {
 			int count = orderedList.get(reminder.get(i)).size();
-			slices[i] = new Slice(count, view.getColor(orderedList.get(reminder.get(i)).get(0).getClass()));
+			if(official) {
+				slices[i] = new Slice(count, view.getOfficialColor(orderedList.get(reminder.get(i)).get(0)));
+			} else {
+				slices[i] = new Slice(count, view.getColor(orderedList.get(reminder.get(i)).get(0)));
+			}
 		}
 		return slices;
 	}
