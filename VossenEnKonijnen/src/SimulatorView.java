@@ -54,7 +54,7 @@ public class SimulatorView extends JFrame
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
-        logoImage = new ImageIcon(Simulator.class.getResource("/Legenda2.png"));
+        logoImage = new ImageIcon(Simulator.class.getResource("/Legenda3.png"));
         legend = new JLabel(logoImage, JLabel.CENTER);
         
         JPanel panelleft = new JPanel(new BorderLayout());
