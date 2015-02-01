@@ -15,7 +15,6 @@ public class GraphView
 {
     private static final Color LIGHT_GRAY = new Color(0, 0, 0, 40);
 
-    private static JFrame frame;
     private static GraphPanel graph;
     private static JLabel stepLabel;
     private static JLabel countLabel;
@@ -37,27 +36,26 @@ public class GraphView
      * @param class1 The first class to be plotted.
      * @param width The second class to be plotted.
      */
-    public GraphView(int width, int height, int startMax)
+    public GraphView(int height, int width, FieldStats fieldStats)
     {
-        stats = new FieldStats();
+        stats = fieldStats;
         classes = new HashSet<Class>();
         colors = new HashMap<Class, Color>();
-
-        if (frame == null) {
-            frame = makeFrame(width, height, startMax);
-        }
-        else {
-            graph.newRun();
-        }
-
-        //showStatus(0, null);
+        
+        graph = new GraphPanel(height, width, 100);
+        
     }
 
-    /**
+	/**
      * Define a color to be used for a given class of animal.
      * @param animalClass The animal's Class object.
      * @param color The color to be used for the given class.
      */
+    
+    public GraphPanel getPanel() {
+    	return this.graph;
+    }
+    
     public void setColor(Class animalClass, Color color)
     {
         colors.put(animalClass, color);
@@ -98,31 +96,6 @@ public class GraphView
     /**
      * Prepare the frame for the graph display.
      */
-    private JFrame makeFrame(int width, int height, int startMax)
-    {
-        JFrame frame = new JFrame("Graph View");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        Container contentPane = frame.getContentPane();
-
-        graph = new GraphPanel(width, height, startMax);
-        contentPane.add(graph, BorderLayout.CENTER);
-
-        JPanel bottom = new JPanel();
-        bottom.add(new JLabel("Step:"));
-        stepLabel = new JLabel("");
-        bottom.add(stepLabel);
-        countLabel = new JLabel(" ");
-        bottom.add(countLabel);
-        contentPane.add(bottom, BorderLayout.SOUTH);
-        
-        frame.pack();
-        frame.setLocation(20, 600);
-
-        frame.setVisible(true);
-
-        return frame;
-    }
 
     // ============================================================================
     /**

@@ -1,7 +1,8 @@
 import java.awt.*;
-import java.awt.event.*;
+
 import javax.swing.*;
 
+import javax.imageio.ImageIO;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,9 +26,11 @@ public class SimulatorView extends JFrame
 
     private final String STEP_PREFIX = "Step: ";
     private final String POPULATION_PREFIX = "Population: ";
-    private JLabel stepLabel, population;
-    private JButton oneStep, moreSteps;
+    private JLabel stepLabel, population, legend;
+    private JButton step1, step100, step1000, reset;
     private FieldView fieldView;
+    private Icon logoImage;
+    private Container contents;
     
     // A map for storing colors for participants in the simulation
     private Map<Class, Color> colors;
@@ -39,9 +42,9 @@ public class SimulatorView extends JFrame
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width)
+    public SimulatorView(int height, int width, FieldStats fieldStats)
     {
-        stats = new FieldStats();
+        stats = fieldStats;
         colors = new LinkedHashMap<Class, Color>();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -51,10 +54,43 @@ public class SimulatorView extends JFrame
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
-        JPanel panelleft = new JPanel();
-        oneStep = new JButton("Step 1");
-        moreSteps = new JButton("Step 100");
+        //logoImage = new ImageIcon(Simulator.class.getResource("/Legenda2.png"));
+        //legend = new JLabel(logoImage, JLabel.CENTER);
         
+        JPanel panelleft = new JPanel();
+        step1 = new JButton("Step 1");
+        step100 = new JButton("Step 100");
+        step1000 = new JButton("Step 1000");
+        reset = new JButton("Reset");
+        
+        JPanel steps = new JPanel(new GridBagLayout());
+        GridBagConstraints cst = new GridBagConstraints();
+        cst.fill = GridBagConstraints.BOTH;
+        
+        cst.gridx = 0;
+        cst.gridy = 0;
+        cst.weightx = 1.0;
+        cst.weighty = 1.0;
+        steps.add(step1, cst);
+        
+        cst.gridx = 0;
+        cst.gridy = 1;
+        cst.weightx = 1.0;
+        cst.weighty = 1.0;
+        steps.add(step100, cst);
+        
+        cst.gridx = 0;
+        cst.gridy = 2;
+        cst.weightx = 1.0;
+        cst.weighty = 1.0;
+        steps.add(step1000, cst);
+        
+        cst.gridx = 0;
+        cst.gridy = 4;
+        cst.weightx = 1.0;
+        cst.weighty = 1.0;
+        
+        steps.add(reset, cst);
         
         JPanel panelright = new JPanel(new BorderLayout());
         
@@ -62,14 +98,14 @@ public class SimulatorView extends JFrame
         
         fieldView = new FieldView(height, width);
 
-        Container contents = getContentPane();
+        contents = getContentPane();
         
         panelright.add(stepLabel, BorderLayout.NORTH);
         panelright.add(fieldView, BorderLayout.CENTER);
         panelright.add(population, BorderLayout.SOUTH);
         
-        panelleft.add(oneStep, BorderLayout.NORTH);
-        panelleft.add(moreSteps, BorderLayout.SOUTH);
+        panelleft.add(steps, BorderLayout.NORTH);
+        //panelleft.add(legend, BorderLayout.SOUTH);
         
         contents.add(panelright, BorderLayout.EAST);
         contents.add(panelleft, BorderLayout.WEST);
@@ -83,40 +119,50 @@ public class SimulatorView extends JFrame
      * @param color The color to be used for the given class.
      */
     
-    public JButton getOneStepButton() {
-    	return this.oneStep;
+    public JButton getStep1Button() {
+    	return this.step1;
     }
     
-    public JButton getMoreStepsButton() {
-    	return this.moreSteps;
+    public JButton getStep100Button() {
+    	return this.step100;
+    }
+    
+    public JButton getStep1000Button() {
+    	return this.step1000;
     }
     public void disableButtons() {
-    	this.oneStep.setEnabled(false);
-    	this.moreSteps.setEnabled(false);
+    	this.step1.setEnabled(false);
+    	this.step100.setEnabled(false);
+    	this.step1000.setEnabled(false);
+    	this.reset.setEnabled(false);
     }
     public void enableButtons() {
-    	this.oneStep.setEnabled(true);
-    	this.moreSteps.setEnabled(true);
+    	this.step1.setEnabled(true);
+    	this.step100.setEnabled(true);
+    	this.step1000.setEnabled(true);
+    	this.reset.setEnabled(true);
     }
-    public void setColor(Class animalClass, Color color)
-    {
-        colors.put(animalClass, color);
+    
+    public Color getColor(Object animal) {
+    	if(animal instanceof Bear || animal instanceof Fox || animal instanceof Rabbit) {
+            Animal a = (Animal) animal;
+            return a.getColor();
+        } else if(animal instanceof Hunter) {
+        	Hunter h = (Hunter) animal;
+        	return h.getColor();
+        }
+		return null;
     }
-
+    
+    public FieldStats getStats() {
+    	return stats;
+    }
+    public JButton getResetButton() {
+    	return this.reset;
+    }
     /**
      * @return The color to be used for a given class of animal.
      */
-    public Color getColor(Class animalClass)
-    {
-        Color col = colors.get(animalClass);
-        if(col == null) {
-            // no color defined for this class
-            return UNKNOWN_COLOR;
-        }
-        else {
-            return col;
-        }
-    }
 
     /**
      * Show the current status of the field.
@@ -139,7 +185,7 @@ public class SimulatorView extends JFrame
                 Object animal = field.getObjectAt(row, col);
                 if(animal != null) {
                     stats.incrementCount(animal.getClass());
-                    fieldView.drawMark(col, row, getColor(animal.getClass()));
+                    fieldView.drawMark(col, row, getColor(animal));
                 }
                 else {
                     fieldView.drawMark(col, row, EMPTY_COLOR);

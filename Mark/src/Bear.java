@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Random;
@@ -41,6 +42,7 @@ public class Bear extends Animal
     public Bear(boolean randomAge, Field field, Location location)
     {
         super(field, location);
+        color = Color.black;
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
             foodLevel = rand.nextInt(FOOD_VALUE);

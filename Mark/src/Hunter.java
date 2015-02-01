@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,6 +9,11 @@ public class Hunter implements Actor {
     private Field field;
     // The hunter's position in the field.
     private Location location;
+    private int limit = 0;
+    private final int BULLET_LIMIT = 7;
+    private int wait = 0;
+    private final int WAIT_LIMIT = 3;
+    private Color color;
 
 	/**
      * Create a hunter. 
@@ -16,6 +22,7 @@ public class Hunter implements Actor {
      */
     public Hunter(Field field, Location location)
     {
+    	color = Color.red;
         this.field = field;
         setLocation(location);
     }
@@ -35,6 +42,9 @@ public class Hunter implements Actor {
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
                 newLocation = this.field.freeAdjacentLocation(this.location);
+                if(newLocation == null) {
+                	newLocation = location; // Stay put
+                }
             }
             
             setLocation(newLocation);
@@ -48,6 +58,10 @@ public class Hunter implements Actor {
      * @return 
      * @return Where animal was found, or null if it wasn't.
      */
+    public Color getColor() {
+    	return color;
+    }
+    
     private void setLocation(Location newLocation)
     {
         if(location != null) {
@@ -62,33 +76,50 @@ public class Hunter implements Actor {
         Field field = this.field;
         List<Location> adjacent = field.adjacentLocations(this.location);
         Iterator<Location> it = adjacent.iterator();
-        while(it.hasNext()) {
-            Location where = it.next();
-            Object animal = field.getObjectAt(where);
-            if(animal instanceof Rabbit) {
-                Rabbit rabbit = (Rabbit) animal;
-                if(rabbit.isAlive()) { 
-                    rabbit.setDead();
-                    // Remove the dead rabbit from the field.
-                    return where;
-                }
-            }
-                if(animal instanceof Fox) {
-                    Fox fox = (Fox) animal;
-                    if(fox.isAlive()) { 
-                        fox.setDead();
-                        // Remove the dead rabbit from the field.
-                        return where;
-                    }
-                }
-                else if(animal instanceof Bear) {
-                    Bear bear = (Bear) animal;
-                    if(bear.isAlive()) { 
-                        bear.setDead();
-                        // Remove the dead rabbit from the field.
-                        return where;
-                        }
-            }
+        if(wait == 0) {
+        	if(limit < BULLET_LIMIT) {
+		        while(it.hasNext()) {
+		            Location where = it.next();
+		            Object animal = field.getObjectAt(where);
+		            if(animal instanceof Rabbit) {
+		                Rabbit rabbit = (Rabbit) animal;
+		                if(rabbit.isAlive()) { 
+		                    rabbit.setDead();
+		                    // Remove the dead rabbit from the field.
+		                    limit++;
+		                    return where;
+		                }
+		            }
+		                if(animal instanceof Fox) {
+		                    Fox fox = (Fox) animal;
+		                    if(fox.isAlive()) { 
+		                        fox.setDead();
+		                        // Remove the dead rabbit from the field.
+		                        limit++;
+		                        return where;
+		                    }
+		                }
+		                else if(animal instanceof Bear) {
+		                    Bear bear = (Bear) animal;
+		                    if(bear.isAlive()) { 
+		                        bear.setDead();
+		                        // Remove the dead rabbit from the field.
+		                        limit++;
+		                        return where;
+		                        }
+		            }
+		        }
+        	} else {
+        		wait = WAIT_LIMIT; // 2 + 1 = waiting 3 turns
+        		color = Color.green;
+        		
+        	}
+        } else {
+        	wait--;
+        	if(wait == 0) {
+        		color = Color.red;
+        		limit = 0;
+        	}
         }
         return null;
     }

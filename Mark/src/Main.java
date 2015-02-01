@@ -7,16 +7,18 @@ public class Main {
 		
 		final Simulator simulator = new Simulator();
 		
-		JButton oneStep = simulator.getSimulatorView().getOneStepButton();
-		JButton moreSteps = simulator.getSimulatorView().getMoreStepsButton();
+		JButton step1 = simulator.getSimulatorView().getStep1Button();
+		JButton step100 = simulator.getSimulatorView().getStep100Button();
+		JButton step1000 = simulator.getSimulatorView().getStep1000Button();
+		JButton reset = simulator.getSimulatorView().getResetButton();
 		
-		oneStep.addActionListener(new ActionListener() {
+		step1.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent evt) {
 				simulator.simulateOneStep();
 			}
 		});
-		moreSteps.addActionListener(new ActionListener() {
+		step100.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent evt) {
 				
@@ -29,6 +31,29 @@ public class Main {
 					}
 				});
 				moreStepsThread.start();
+			}
+		});
+		
+		step1000.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent evt) {
+				
+				simulator.getSimulatorView().disableButtons();
+				
+				Thread moreStepsThread = new Thread( new Runnable() {
+					public void run() {
+						simulator.simulate(1000);
+						simulator.getSimulatorView().enableButtons();
+					}
+				});
+				moreStepsThread.start();
+			}
+		});
+		
+		reset.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent evt) {
+				simulator.reset();
 			}
 		});
 	}

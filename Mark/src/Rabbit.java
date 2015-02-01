@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.List;
 import java.util.Random;
 
@@ -23,6 +24,7 @@ public class Rabbit extends Animal
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
+    
     // Individual characteristics (instance fields).
     
 
@@ -37,6 +39,7 @@ public class Rabbit extends Animal
     public Rabbit(boolean randomAge, Field field, Location location)
     {
         super(field, location);
+    	color = Color.orange;
         setAge(0);
         if(randomAge) {
         	setAge(rand.nextInt(MAX_AGE));
@@ -65,6 +68,9 @@ public class Rabbit extends Animal
         }
     }
 
+    public Color getColor() {
+    	return color;
+    }
 
 	@Override
 	protected int getBreedingAge() {

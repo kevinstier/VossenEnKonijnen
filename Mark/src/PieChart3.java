@@ -39,9 +39,11 @@ class PieChart3 extends JComponent {
       for (int i = 0; i < slices.length; i++) {
          startAngle = (int) (curValue * 360 / total);
          int arcAngle = (int) (slices[i].value * 360 / total);
+         try {
          g.setColor(slices[i].color);
          g.fillArc(area.x, area.y, area.width, area.height, 
          startAngle, arcAngle);
+         } catch(Exception e) {}
          curValue += slices[i].value;
       }
    }

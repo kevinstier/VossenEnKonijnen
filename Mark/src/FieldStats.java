@@ -11,11 +11,12 @@ import java.util.HashMap;
  */
 public class FieldStats
 {
+	private TextView textView;
     // Counters for each type of entity (fox, rabbit, etc.) in the simulation.
     private HashMap<Class, Counter> counters;
     // Whether the counters are currently up to date.
     private boolean countsValid;
-    private TextView textView;
+    private int step = 0;
 
     /**
      * Construct a FieldStats object.
@@ -28,6 +29,11 @@ public class FieldStats
         countsValid = true;
         textView = new TextView();
     }
+    
+    public void setStep (int step)
+    {
+    	this.step = step;
+    }
 
     /**
      * Get details of what is in the field.
@@ -35,12 +41,11 @@ public class FieldStats
      */
     public String getPopulationDetails(Field field)
     {
-    	
-    	
         StringBuffer buffer = new StringBuffer();
         if(!countsValid) {
             generateCounts(field);
         }
+        textView.println("Step: " + step + "\n");
         for(Class key : counters.keySet()) {
             Counter info = counters.get(key);
             buffer.append(info.getName());
@@ -49,7 +54,8 @@ public class FieldStats
             buffer.append(' ');
             textView.println(info.getName() + ": " + info.getCount());
         }
-        textView.println("------------------");
+        textView.println("\n------------------\n");
+        step++;
         return buffer.toString();
     }
     
@@ -64,6 +70,16 @@ public class FieldStats
             Counter count = counters.get(key);
             count.reset();
         }
+    }
+    
+    public void hardReset() {
+    	textView.reset();
+    	countsValid = false;
+        for(Class key : counters.keySet()) {
+            Counter count = counters.get(key);
+            count.reset();
+        }
+        step = 0;
     }
 
     /**

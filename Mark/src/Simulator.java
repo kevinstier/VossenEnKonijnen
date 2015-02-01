@@ -37,11 +37,9 @@ public class Simulator
     // A graphical view of the simulation.
     private SimulatorView view;
     // A pie chart of the simulation.
-    private PieChartView pieView;
-    // A pie chart of the simulation.
-    private GraphView graphView;
-    // A bar view of the simulation.
-    private BarView barView;
+    private MonitorView monitorView;
+    
+    private FieldStats stats;
     
     /**
      * Construct a simulation field with default size.
@@ -68,17 +66,13 @@ public class Simulator
         actors = new ArrayList<Actor>();
         field = new Field(depth, width);
 
-        pieView = new PieChartView();
-        graphView = new GraphView(500, 300, 100);
-        barView = new BarView(view);
         
         
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width);
-        view.setColor(Rabbit.class, Color.orange);
-        view.setColor(Fox.class, Color.blue);
-        view.setColor(Bear.class, Color.black);
-        view.setColor(Hunter.class, Color.red);
+        stats = new FieldStats();
+        view = new SimulatorView(depth, width, stats);
+        
+        monitorView = new MonitorView(view);
         
         // Setup a valid starting point.
         reset();
@@ -129,9 +123,8 @@ public class Simulator
         actors.addAll(newActors);
 
         view.showStatus(step, field);
-        Slice[] slices = pieView.updatePieChart(actors, view);
-        graphView.showStatus(step, actors, view);
-        barView.update(slices);
+        
+        monitorView.update(actors, step);
     }
     
     public SimulatorView getSimulatorView() {
@@ -146,11 +139,12 @@ public class Simulator
         step = 0;
         actors.clear();
         populate();
+        stats.hardReset();
         
         // Show the starting state in the view.
         view.showStatus(step, field);
-        pieView.updatePieChart(actors, view);
-        graphView.showStatus(step, actors, view);
+        
+        monitorView.update(actors, step);
     }
     
     /**
