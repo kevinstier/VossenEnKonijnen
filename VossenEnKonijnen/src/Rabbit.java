@@ -30,7 +30,6 @@ public class Rabbit extends Animal
     private boolean ziek;
     private final double FIRST_INFECTED_CHANCE = 0.1;
     private final int FIRST_INFECTED = 1;
-    private int numberInfected;
     
     
     // Individual characteristics (instance fields).
