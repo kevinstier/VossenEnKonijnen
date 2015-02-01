@@ -20,6 +20,7 @@ public abstract class Animal implements Actor
     private int age;
  // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
+    private int infected = 0;
     
     protected Color color;
     
@@ -147,7 +148,7 @@ public abstract class Animal implements Actor
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             if (animal instanceof Rabbit) {
-            	nieuw = new Rabbit(false, field, loc);
+            	nieuw = new Rabbit(false, field, loc, infected);
             }
             else if (animal instanceof Fox) {
             	nieuw = new Fox(false, field, loc);

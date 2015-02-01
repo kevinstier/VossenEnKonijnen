@@ -33,6 +33,7 @@ public class Simulator
     private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
     // The possibility that grass will be created in any given grid position.
     private static final double GRASS_CREATION_PROBABILITY = 0.008;
+    private int infected = 0;
 
     // List of animals in the field.
     private List<Actor> actors;
@@ -169,7 +170,8 @@ public class Simulator
                 }
                 else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Rabbit rabbit = new Rabbit(true, field, location);
+                    Rabbit rabbit = new Rabbit(true, field, location, infected);
+                    infected++;
                     actors.add(rabbit);
                 }
                 else if(rand.nextDouble() <= BEAR_CREATION_PROBABILITY) {

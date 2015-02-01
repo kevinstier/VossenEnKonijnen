@@ -26,6 +26,11 @@ public class Rabbit extends Animal
     private static final Random rand = Randomizer.getRandom();
     private static int GRASS_FOOD_VALUE = 5;
     private int foodLevel;
+    private final double INFECTION_CHANCE = 0.9;
+    private boolean ziek;
+    private final double FIRST_INFECTED_CHANCE = 0.1;
+    private final int FIRST_INFECTED = 1;
+    private int numberInfected;
     
     
     // Individual characteristics (instance fields).
@@ -39,7 +44,7 @@ public class Rabbit extends Animal
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Rabbit(boolean randomAge, Field field, Location location)
+    public Rabbit(boolean randomAge, Field field, Location location, int numberInfected)
     {
         super(field, location);
     	color = Color.orange;
@@ -48,6 +53,11 @@ public class Rabbit extends Animal
         	setAge(rand.nextInt(MAX_AGE));
         }
         foodLevel = GRASS_FOOD_VALUE;
+        int random = (rand.nextInt(100) + 1) / 100;
+    	if( random <= FIRST_INFECTED_CHANCE && numberInfected < FIRST_INFECTED)
+    	{
+    		setZiekteGen(true);
+    	}
     }
     
     /**
@@ -84,6 +94,37 @@ public class Rabbit extends Animal
         }
     }
     
+    public boolean ziekteGen()
+    {
+    	int random = (rand.nextInt(100) + 1) / 100;
+    	if( random <= INFECTION_CHANCE)
+    	{
+    		setZiekteGen(true);
+    		return true;
+    	}
+    	return false;
+    	
+    }
+    
+    public boolean neighborInfected()
+    {
+    	 Field field = getField();
+         List<Location> adjacent = field.adjacentLocations(getLocation());
+         Iterator<Location> it = adjacent.iterator();
+         while(it.hasNext()) {
+             Location where = it.next();
+             Object animal = field.getObjectAt(where);
+             if(animal instanceof Rabbit) {
+                 Rabbit rabbit = (Rabbit) animal;
+                 if(rabbit.getZiekteGen()) {
+                 	ziekteGen();
+                 	
+                 }
+             }
+         }
+         return false;
+    }
+    
     private Location findFood()
 	{
 		Field field = getField();
@@ -104,7 +145,17 @@ public class Rabbit extends Animal
 		}
 		return null;
 	}
+    
+    public boolean getZiekteGen()
+    {
+    	return ziek;
+    }
 
+    public void setZiekteGen(boolean ziek)
+    {
+    	this.ziek = ziek;
+     	color = Color.cyan;
+    }
 
     public Color getColor() {
     	return color;
