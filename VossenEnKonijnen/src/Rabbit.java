@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +24,9 @@ public class Rabbit extends Animal
     private static final int MAX_LITTER_SIZE = 4;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
+    private static int GRASS_FOOD_VALUE = 5;
+    private int foodLevel;
+    
     
     // Individual characteristics (instance fields).
     
@@ -37,10 +42,12 @@ public class Rabbit extends Animal
     public Rabbit(boolean randomAge, Field field, Location location)
     {
         super(field, location);
+    	color = Color.orange;
         setAge(0);
         if(randomAge) {
         	setAge(rand.nextInt(MAX_AGE));
         }
+        foodLevel = GRASS_FOOD_VALUE;
     }
     
     /**
@@ -51,10 +58,11 @@ public class Rabbit extends Animal
     public void act(List<Actor> newRabbits)
     {
         incrementAge();
+        incrementHunger();
         if(isAlive()) {
             giveBirth(newRabbits);            
-            // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
+            // Move towards a source of food if found.
+            Location newLocation = findFood();
             if(newLocation != null) {
                 setLocation(newLocation);
             }
@@ -64,7 +72,43 @@ public class Rabbit extends Animal
             }
         }
     }
+    
+    /**
+     * Make this fox more hungry. This could result in the fox's death.
+     */
+    private void incrementHunger()
+    {
+        foodLevel--;
+        if(foodLevel <= 0) {
+            setDead();
+        }
+    }
+    
+    private Location findFood()
+	{
+		Field field = getField();
+		List<Location> adjacent = field.adjacentLocations(getLocation());
+		Iterator<Location> it = adjacent.iterator();
+		while(it.hasNext()) {
+			Location where = it.next();
+			Object animal = field.getObjectAt(where);
+			if(animal instanceof Grass) {
+				Grass grass = (Grass) animal;
+				if(grass.isAlive()) {
+					grass.setDead();
+					foodLevel = GRASS_FOOD_VALUE;
+					// Remove the dead piece of grass from the field.
+					return where;
+				}
+			}
+		}
+		return null;
+	}
 
+
+    public Color getColor() {
+    	return color;
+    }
 
 	@Override
 	protected int getBreedingAge() {

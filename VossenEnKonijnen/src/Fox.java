@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Random;
@@ -41,6 +42,7 @@ public class Fox extends Animal
     public Fox(boolean randomAge, Field field, Location location)
     {
         super(field, location);
+        color = Color.blue;
         if(randomAge) {
         	setAge(rand.nextInt(MAX_AGE));
             foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);

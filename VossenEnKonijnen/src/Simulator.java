@@ -31,6 +31,8 @@ public class Simulator
  // The probability that a hunter will be created in any given grid position.
     private static final double HUNTER_CREATION_PROBABILITY = 0.01;  
     private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
+    // The possibility that grass will be created in any given grid position.
+    private static final double GRASS_CREATION_PROBABILITY = 0.008;
 
     // List of animals in the field.
     private List<Actor> actors;
@@ -41,11 +43,9 @@ public class Simulator
     // A graphical view of the simulation.
     private SimulatorView view;
     // A pie chart of the simulation.
-    private PieChartView pieView;
-    // A pie chart of the simulation.
-    private GraphView graphView;
-    // A bar view of the simulation.
-    private BarView barView;
+    private MonitorView monitorView;
+    
+    private FieldStats stats;
     
     /**
      * Construct a simulation field with default size.
@@ -73,16 +73,11 @@ public class Simulator
         actors = new ArrayList<Actor>();
         field = new Field(depth, width);
 
-        pieView = new PieChartView();
-        graphView = new GraphView(500, 300, 100);
-        barView = new BarView(view);
-        
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width);
-        view.setColor(Rabbit.class, Color.orange);
-        view.setColor(Fox.class, Color.blue);
-        view.setColor(Bear.class, Color.black);
-        view.setColor(Hunter.class, Color.red);
+        stats = new FieldStats();
+        view = new SimulatorView(depth, width, stats);
+        
+        monitorView = new MonitorView(view);
         
         // Setup a valid starting point.
         reset();
@@ -133,9 +128,7 @@ public class Simulator
         actors.addAll(newActors);
 
         view.showStatus(step, field);
-        Slice[] slices = pieView.updatePieChart(actors, view);
-        graphView.showStatus(step, actors, view);
-        barView.update(slices);
+        monitorView.update(actors, step);
         
     }
     
@@ -148,14 +141,15 @@ public class Simulator
      */
     public void reset()
     {
-        step = 0;
+    	step = 0;
         actors.clear();
         populate();
+        stats.hardReset();
         
         // Show the starting state in the view.
         view.showStatus(step, field);
-        pieView.updatePieChart(actors, view);
-        graphView.showStatus(step, actors, view);
+        
+        monitorView.update(actors, step);
     }
     
     /**
@@ -188,6 +182,11 @@ public class Simulator
                     Location location = new Location(row, col);
                     Hunter hunter = new Hunter(field, location);
                     actors.add(hunter);
+                }
+                else if(rand.nextDouble() <= GRASS_CREATION_PROBABILITY){
+                	Location location = new Location(row, col);
+                	Grass grass = new Grass(field, location);
+                	actors.add(grass);
                 }
                 // else leave the location empty.
             }

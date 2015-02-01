@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.List;
 import java.util.Random;
 
@@ -19,6 +20,8 @@ public abstract class Animal implements Actor
     private int age;
  // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
+    
+    protected Color color;
     
     
     /**
@@ -46,6 +49,11 @@ public abstract class Animal implements Actor
      * Indicate that the animal is no longer alive.
      * It is removed from the field.
      */
+    
+    public Color getColor() {
+    	return color;
+    }
+    
     protected void setDead()
     {
         alive = false;
