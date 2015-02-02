@@ -20,8 +20,6 @@ public class Rabbit extends Animal
     private double breedingProbability;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    // The chance the rabbit will get infected
-    private final double INFECTION_CHANCE = 0.9;
     // A boolean to see whether the rabbit is sick or not
     private boolean ziek;
     // The chance the rabbit is one of the first to be infected
@@ -30,8 +28,6 @@ public class Rabbit extends Animal
     private final int FIRST_INFECTED = 500;
     // Integer for how many steps the rabbit has been sick
     private int timeSick = 0;
-    // Maximum steps the rabbit is allowed to be sick
-    private final int MAX_TIME_SICK = 5; 
     // Count neighbors
     private int counter;
     // Minimum free space required around the rabbit
@@ -80,7 +76,7 @@ public class Rabbit extends Animal
     public void act(List<Actor> newRabbits)
     {
     	if (getZiekteGen()){ 
-	    	if (timeSick < MAX_TIME_SICK) {
+	    	if (timeSick < SimulatorView.getStepsBeforeDeath()) {
 	            timeSick++;
 	    	} else {
 	    		setDead();
@@ -161,7 +157,7 @@ public class Rabbit extends Animal
     public boolean ziekteGen()
     {
     	int random = (rand.nextInt(100) + 1) / 100;
-    	if( random <= INFECTION_CHANCE)
+    	if( random <= ((double) SimulatorView.getInfectionChance()) / 100)
     	{
     		return true;
     	}

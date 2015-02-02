@@ -47,6 +47,8 @@ public class SimulatorView extends JFrame
     public static Configuration foodValueBear;
     public static Configuration bulletLimitHunter;
     public static Configuration waitLimitHunter;
+    public static Configuration infectionChance;
+    public static Configuration stepsBeforeDeath;
     
     // A map for storing colors for participants in the simulation
     private Map<Class, Color> colors;
@@ -99,6 +101,8 @@ public class SimulatorView extends JFrame
     	foodValueBear = new Configuration("Food value Bear",0,20,11);
     	bulletLimitHunter = new Configuration("Bullet limit Hunter",0,20,7);
     	waitLimitHunter = new Configuration("Wait limit Hunter",0,20,3);
+    	infectionChance = new Configuration("Infection chance Rabbit",0,100,90);
+    	stepsBeforeDeath = new Configuration("Steps before death Rabbit",0,10,5);
         
         cst.gridx = 0;
         cst.gridy = 0;
@@ -161,7 +165,8 @@ public class SimulatorView extends JFrame
         settings.add(foodValueBear);
         settings.add(bulletLimitHunter);
         settings.add(waitLimitHunter);
-        
+        settings.add(infectionChance);
+        settings.add(stepsBeforeDeath);
         
         tabbedPane.addTab("Field", fieldPanel);
         tabbedPane.addTab("Text", textView);
@@ -456,6 +461,12 @@ public class SimulatorView extends JFrame
 	}
 	public static int getBulletLimitHunter() {
 		return bulletLimitHunter.getValue();
+	}
+	public static int getInfectionChance() {
+		return infectionChance.getValue();
+	}
+	public static int getStepsBeforeDeath() {
+		return stepsBeforeDeath.getValue();
 	}
 	
 }
