@@ -73,7 +73,8 @@ public class Rabbit extends Animal
      * around. Sometimes it will breed or die of old age.
      * @param newRabbits A list to return newly born rabbits.
      */
-    public void act(List<Actor> newRabbits)
+    @Override
+	public void act(List<Actor> newRabbits)
     {
     	if (getZiekteGen()){ 
 	    	if (timeSick < SimulatorView.getStepsBeforeDeath()) {
@@ -115,7 +116,8 @@ public class Rabbit extends Animal
      * New births will be made into free adjacent locations.
      * @param newRabbits A list to return newly born rabbits.
      */
-    public void giveBirth(List<Actor> newRabbits)
+    @Override
+	public void giveBirth(List<Actor> newRabbits)
     {
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -217,7 +219,8 @@ public class Rabbit extends Animal
      * Return the current color of the rabbit
      * @return the color
      */
-    public Color getColor() {
+    @Override
+	public Color getColor() {
     	return color;
     }
     
@@ -225,7 +228,8 @@ public class Rabbit extends Animal
      * Return the regular color of the rabbit
      * @return the color
      */
-    public Color getOfficialColor()
+    @Override
+	public Color getOfficialColor()
     {
     	return OFFICIAL_COLOR;
     }
