@@ -40,6 +40,7 @@ public class Rabbit extends Animal
     {
         super(field, location);
     	color = Color.orange;
+    	officialColor = Color.orange;
         setAge(0);
         if(randomAge) {
         	setAge(rand.nextInt(MAX_AGE));

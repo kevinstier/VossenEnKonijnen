@@ -43,6 +43,7 @@ public class Fox extends Animal
     {
         super(field, location);
         color = Color.blue;
+        officialColor = Color.blue;
         if(randomAge) {
         	setAge(rand.nextInt(MAX_AGE));
             foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);

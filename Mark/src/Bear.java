@@ -43,6 +43,7 @@ public class Bear extends Animal
     {
         super(field, location);
         color = Color.black;
+        officialColor = Color.black;
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
             foodLevel = rand.nextInt(FOOD_VALUE);

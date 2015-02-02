@@ -13,7 +13,7 @@ public class Hunter implements Actor {
     private final int BULLET_LIMIT = 7;
     private int wait = 0;
     private final int WAIT_LIMIT = 3;
-    private Color HUNTER_COLOR = Color.red;
+    private final Color HUNTER_COLOR = Color.red;
     private Color color;
 
 	/**

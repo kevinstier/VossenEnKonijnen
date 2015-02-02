@@ -23,6 +23,8 @@ public abstract class Animal implements Actor
     
     protected Color color;
     
+    protected Color officialColor;
+    
     
     /**
      * Create a new animal at location in field.
@@ -52,6 +54,9 @@ public abstract class Animal implements Actor
     
     public Color getColor() {
     	return color;
+    }
+    public Color getOfficialColor() {
+    	return officialColor;
     }
     
     protected void setDead()
