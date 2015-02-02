@@ -54,10 +54,10 @@ public class SimulatorView extends JFrame
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
-        logoImage = new ImageIcon(Simulator.class.getResource("/Legenda3.png"));
-        legend = new JLabel(logoImage, JLabel.CENTER);
+        //logoImage = new ImageIcon(Simulator.class.getResource("/Legenda2.png"));
+        //legend = new JLabel(logoImage, JLabel.CENTER);
         
-        JPanel panelleft = new JPanel(new BorderLayout());
+        JPanel panelleft = new JPanel();
         step1 = new JButton("Step 1");
         step100 = new JButton("Step 100");
         step1000 = new JButton("Step 1000");
@@ -107,18 +107,20 @@ public class SimulatorView extends JFrame
         fieldPanel.add(fieldView, BorderLayout.CENTER);
         fieldPanel.add(population, BorderLayout.SOUTH);
         
-        monitorView.setPreferredSize(new Dimension(150,320));
+        JPanel monitorWrap = new JPanel(new BorderLayout());
+        monitorWrap.add(monitorView, BorderLayout.SOUTH);
+        monitorWrap.setBackground(Color.white);
         
         tabbedPane.addTab("Field", fieldPanel);
         tabbedPane.addTab("Text", textView);
-        tabbedPane.addTab("Graph", monitorView);
+        tabbedPane.addTab("Graph", monitorWrap);
         
         panelright.setLayout(new BorderLayout());
         
         panelright.add(tabbedPane);
         
         panelleft.add(steps, BorderLayout.NORTH);
-        panelleft.add(legend, BorderLayout.SOUTH);
+        //panelleft.add(legend, BorderLayout.SOUTH);
         
         contents.add(panelright, BorderLayout.EAST);
         contents.add(panelleft, BorderLayout.WEST);
@@ -170,7 +172,7 @@ public class SimulatorView extends JFrame
     public static Color getOfficialColor(Object animal) {
     	if(animal instanceof Bear || animal instanceof Fox || animal instanceof Rabbit) {
             Animal a = (Animal) animal;
-            return a.getColor();
+            return a.getOfficialColor();
         } else if(animal instanceof Hunter) {
         	Hunter h = (Hunter) animal;
         	return h.getOfficialColor();
