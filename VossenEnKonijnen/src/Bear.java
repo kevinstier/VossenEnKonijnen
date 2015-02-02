@@ -13,18 +13,9 @@ import java.util.Random;
 public class Bear extends Animal
 {
     // Characteristics shared by all Bears (class variables).
-    
-    // The age at which a Bear can start to breed.
-    private static final int BREEDING_AGE = 4;
+
     // The age to which a Bear can live.
-    private static final int MAX_AGE = 40;
-    // The likelihood of a Bear breeding.
-    private static final double BREEDING_PROBABILITY = 0.04;
-    // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
-    // The food value of a single rabbit. In effect, this is the
-    // number of steps a Bear can go before it has to eat again.
-    private static final int FOOD_VALUE = 11;
+    private static int max_age;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -45,12 +36,13 @@ public class Bear extends Animal
         color = Color.black;
         OFFICIAL_COLOR = Color.black;
         if(randomAge) {
-            setAge(rand.nextInt(MAX_AGE));
-            foodLevel = rand.nextInt(FOOD_VALUE);
+        	max_age = SimulatorView.getLifeTimeBear();
+            setAge(rand.nextInt(max_age));
+            foodLevel =  rand.nextInt(SimulatorView.getFoodValueBear());
         }
         else {
             setAge(0);
-            foodLevel = FOOD_VALUE;
+            foodLevel = SimulatorView.getFoodValueBear();
         }
     }
     
@@ -132,7 +124,7 @@ public class Bear extends Animal
 				Fox fox = (Fox) animal;
 				if(fox.isAlive()) {
 					fox.setDead();
-					foodLevel = FOOD_VALUE;
+					foodLevel = SimulatorView.getFoodValueBear();
 					// Remove the dead fox from the field.
 					return where;
 				}
@@ -141,7 +133,7 @@ public class Bear extends Animal
                 Rabbit rabbit = (Rabbit) animal;
                 if(rabbit.isAlive()) { 
                     rabbit.setDead();
-                    foodLevel = FOOD_VALUE;
+                    foodLevel = SimulatorView.getFoodValueBear();
                     // Remove the dead rabbit from the field.
                     return where;
                 }
@@ -150,33 +142,42 @@ public class Bear extends Animal
         return null;
     }
     
+    /**
+     * Return the current color of the rabbit
+     * @return the color
+     */
     public Color getColor() {
     	return color;
     }
     
+    /**
+     * Return the regular color of the rabbit
+     * @return the color
+     */
     public Color getOfficialColor()
     {
     	return OFFICIAL_COLOR;
     }
 
-	@Override
+    @Override
 	protected int getBreedingAge() {
-		return BREEDING_AGE;
+		return SimulatorView. getBreedAgeBear();
 	}
 
 	@Override
 	protected int getMaxAge() {
-		return MAX_AGE;
+		return SimulatorView.getLifeTimeBear();
 	}
 
 	@Override
 	protected double getBreedingProbability() {
-		return BREEDING_PROBABILITY;
+		return ((double) SimulatorView.getBreedProbabilityBear()) / 100;
 	}
+
 
 	@Override
 	protected int getMaxLitterSize() {
-		return MAX_LITTER_SIZE;
+		return SimulatorView.getgetLitterSizeBear();
 	}
 	
 	@Override

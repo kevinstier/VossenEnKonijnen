@@ -13,25 +13,30 @@ import java.util.Random;
 public class Rabbit extends Animal
 {
     // Characteristics shared by all rabbits (class variables).
-
-    // The age at which a rabbit can start to breed.
-    private static final int BREEDING_AGE = 5;
+	
     // The age to which a rabbit can live.
-    private static final int MAX_AGE = 40;
+    private static int max_age;
     // The likelihood of a rabbit breeding.
-    private double breedingProbabilty = 0.8;
-    // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    private double breedingProbability;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
+    // The chance the rabbit will get infected
     private final double INFECTION_CHANCE = 0.9;
+    // A boolean to see whether the rabbit is sick or not
     private boolean ziek;
-    private final int FIRST_INFECTED_CHANCE = 10;
+    // The chance the rabbit is one of the first to be infected
+    private final int FIRST_INFECTED_CHANCE = 20;
+    // Maximum of first infected rabbits
     private final int FIRST_INFECTED = 500;
+    // Integer for how many steps the rabbit has been sick
     private int timeSick = 0;
-    private final int MAX_TIME_SICK = 5;    
+    // Maximum steps the rabbit is allowed to be sick
+    private final int MAX_TIME_SICK = 5; 
+    // Count neighbors
     private int counter;
+    // Minimum free space required around the rabbit
     private final int MIN_FREE_SPACE = 2;
+    // Factor to reduce breeding probability
     private final double LESS_BREEDING_PROBABILITY = 0.5;
     
     
@@ -51,9 +56,11 @@ public class Rabbit extends Animal
         super(field, location);
     	color = Color.orange;
     	OFFICIAL_COLOR = Color.orange;
+    	setBreedingProbability(((double) SimulatorView.getBreedProbabilityRabbit()) / 100);
         
+    	max_age = SimulatorView.getLifeTimeRabbit();
         if(randomAge) {
-        	setAge(rand.nextInt(MAX_AGE));
+          	setAge(rand.nextInt(max_age));
         } else {
         	setAge(0);
         }
@@ -83,7 +90,7 @@ public class Rabbit extends Animal
 	        if(isAlive()) {
 	        	checkFood();
 	        	if (counter >= MIN_FREE_SPACE) {
-	        		setBreedingProbabilty(LESS_BREEDING_PROBABILITY * this.breedingProbabilty);
+	        		setBreedingProbability(LESS_BREEDING_PROBABILITY * this.breedingProbability);
 	        		counter = 0;
 	        	}
 	        	if (neighborInfected()) {
@@ -126,6 +133,9 @@ public class Rabbit extends Animal
         }
     }
     
+    /**
+     * Check whether the rabbit has enough space around it
+     */
     public void checkFood()
     {
     	Field field = getField();
@@ -143,6 +153,11 @@ public class Rabbit extends Animal
         }
     }
     
+    /**
+     * Check whether the rabbit will get infected or not
+     * @return boolean true if yes
+     * @return boolean false if not
+     */
     public boolean ziekteGen()
     {
     	int random = (rand.nextInt(100) + 1) / 100;
@@ -172,49 +187,72 @@ public class Rabbit extends Animal
          return false;
     }
     
-    public void setBreedingProbabilty(double breedingProbabilty)
+    /**
+     * Set the rabbit's breeding probability.
+     * @param the rabbit's breeding probability.
+     */
+    public void setBreedingProbability(double breedingProbability)
     {
-    	this.breedingProbabilty = breedingProbabilty;
+    	this.breedingProbability = breedingProbability;
     }
     
+    /**
+     * Return if the rabbit is sick
+     * @return true if the rabbit is sick
+     * @return false if the rabbit is not sick
+     */
     public boolean getZiekteGen()
     {
     	return ziek;
     }
 
+    /**
+     * Make the rabbit sick
+     * @param true if the rabbit gets sick
+     * @param false if the rabbit doesn't get sick
+     */
     public void setZiekteGen(boolean ziek)
     {
     	this.ziek = ziek;
      	color = Color.cyan;
     }
 
+    /**
+     * Return the current color of the rabbit
+     * @return the color
+     */
     public Color getColor() {
     	return color;
     }
     
+    /**
+     * Return the regular color of the rabbit
+     * @return the color
+     */
     public Color getOfficialColor()
     {
     	return OFFICIAL_COLOR;
     }
 
-	@Override
+    @Override
 	protected int getBreedingAge() {
-		return BREEDING_AGE;
+		return SimulatorView.getBreedAgeRabbit();
 	}
-	
+
 	@Override
 	protected int getMaxAge() {
-		return MAX_AGE;
+		return SimulatorView.getLifeTimeRabbit();
 	}
-	
+
 	@Override
 	protected double getBreedingProbability() {
-		return breedingProbabilty;
+		return breedingProbability;
 	}
+
 	
 	@Override
 	protected int getMaxLitterSize() {
-		return MAX_LITTER_SIZE;
+		return SimulatorView.getLitterSizeRabbit();
 	}
 	
 	@Override

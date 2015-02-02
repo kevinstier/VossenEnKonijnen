@@ -9,11 +9,13 @@ public class Hunter implements Actor {
     private Field field;
     // The hunter's position in the field.
     private Location location;
-    private int limit = 0;
-    private final int BULLET_LIMIT = 7;
+    // Number of kills made
+    private int bullets = 0;
+    // Number of times waited
     private int wait = 0;
-    private final int WAIT_LIMIT = 3;
+    // Color of the hunter
     private Color color;
+    // Color of the hunter
     private Color HUNTER_COLOR = Color.red;
 
 	/**
@@ -54,19 +56,25 @@ public class Hunter implements Actor {
     }
     
     /**
-     * Look for animals adjacent to the current location.
-     * Only the first live rabbit is shot.
-     * @return 
-     * @return Where animal was found, or null if it wasn't.
+     * Get the current hunter color
+     * @return the color
      */
     public Color getColor() {
     	return color;
     }
     
+    /**
+     * Get the regular hunter color
+     * @return the color
+     */
     public Color getOfficialColor() {
     	return HUNTER_COLOR;
     }
     
+    /**
+     * Set the location of the hunter
+     * @param newLocation of the hunter
+     */
     private void setLocation(Location newLocation)
     {
         if(location != null) {
@@ -76,13 +84,19 @@ public class Hunter implements Actor {
         field.place(this, newLocation);
     }
     
+    /**
+     * Look for animals adjacent to the current location.
+     * Only the first live rabbit is shot.
+     * @return 
+     * @return Where animal was found, or null if it wasn't.
+     */
     private Location findAnimal()
     {
         Field field = this.field;
         List<Location> adjacent = field.adjacentLocations(this.location);
         Iterator<Location> it = adjacent.iterator();
         if(wait == 0) {
-        	if(limit < BULLET_LIMIT) {
+        	if(bullets < SimulatorView.getBulletLimitHunter()) {
 		        while(it.hasNext()) {
 		            Location where = it.next();
 		            Object animal = field.getObjectAt(where);
@@ -91,7 +105,7 @@ public class Hunter implements Actor {
 		                if(rabbit.isAlive()) { 
 		                    rabbit.setDead();
 		                    // Remove the dead rabbit from the field.
-		                    limit++;
+		                    bullets++;
 		                    return where;
 		                }
 		            }
@@ -100,7 +114,7 @@ public class Hunter implements Actor {
 		                    if(fox.isAlive()) { 
 		                        fox.setDead();
 		                        // Remove the dead rabbit from the field.
-		                        limit++;
+		                        bullets++;
 		                        return where;
 		                    }
 		                }
@@ -109,13 +123,13 @@ public class Hunter implements Actor {
 		                    if(bear.isAlive()) { 
 		                        bear.setDead();
 		                        // Remove the dead rabbit from the field.
-		                        limit++;
+		                        bullets++;
 		                        return where;
 		                        }
 		            }
 		        }
         	} else {
-        		wait = WAIT_LIMIT; // 2 + 1 = waiting 3 turns
+        		wait = SimulatorView.getWaitLimitHunter(); // 2 + 1 = waiting 3 turns
         		color = Color.pink;
         		
         	}
@@ -123,7 +137,7 @@ public class Hunter implements Actor {
         	wait--;
         	if(wait == 0) {
         		color = Color.red;
-        		limit = 0;
+        		bullets = 0;
         	}
         }
         return null;
@@ -131,7 +145,6 @@ public class Hunter implements Actor {
 	
 
 	public boolean isAlive() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

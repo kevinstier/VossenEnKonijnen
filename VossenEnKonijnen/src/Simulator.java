@@ -24,9 +24,11 @@ public class Simulator
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;   
     // The probability that a bear will be created in any given grid position.
     private static final double BEAR_CREATION_PROBABILITY = 0.01;  
- // The probability that a hunter will be created in any given grid position.
-    private static final double HUNTER_CREATION_PROBABILITY = 0.01;  
-    private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
+    // The probability that a hunter will be created in any given grid position.
+    private static final double HUNTER_CREATION_PROBABILITY = 0.01;
+    // The maximum amount of hunters
+    private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30; 
+    // The number of infected rabbit at the start
     private static int infected = 0;
 
     // List of animals in the field.
@@ -39,7 +41,7 @@ public class Simulator
     private SimulatorView view;
     // A pie chart of the simulation.
     private MonitorView monitorView;
-    
+    // The fieldstats for the simulation
     private FieldStats stats;
     
     /**
@@ -150,6 +152,21 @@ public class Simulator
         view.showStatus(step, field);
         
         monitorView.update(actors, step);
+        
+        SimulatorView.lifeTimeRabbit.setValue(40);
+        SimulatorView.lifeTimeFox.setValue(90);
+        SimulatorView.lifeTimeBear.setValue(40);
+        SimulatorView.breedAgeRabbit.setValue(5);
+        SimulatorView.breedAgeFox.setValue(15);
+        SimulatorView.breedAgeBear.setValue(4);
+        SimulatorView.litterSizeRabbit.setValue(4);
+        SimulatorView.litterSizeFox.setValue(6);
+        SimulatorView.litterSizeBear.setValue(4);
+        SimulatorView.breedProbabilityRabbit.setValue(80);
+        SimulatorView.breedProbabilityFox.setValue(8);
+        SimulatorView.breedProbabilityBear.setValue(2);
+        SimulatorView.foodValueFox.setValue(9);
+        SimulatorView.foodValueBear.setValue(11);
     }
     
     public static int getInfected()

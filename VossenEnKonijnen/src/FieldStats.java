@@ -16,6 +16,7 @@ public class FieldStats
     private HashMap<Class, Counter> counters;
     // Whether the counters are currently up to date.
     private boolean countsValid;
+    // Count the steps in the simulation
     private int step = 0;
 
     /**

@@ -13,15 +13,9 @@ import java.util.Random;
 public class Fox extends Animal
 {
     // Characteristics shared by all foxes (class variables).
-    
-    // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 15;
+
     // The age to which a fox can live.
-    private static final int MAX_AGE = 150;
-    // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.35;
-    // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static int max_age;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
     private static final int RABBIT_FOOD_VALUE = 10;
@@ -45,12 +39,13 @@ public class Fox extends Animal
         color = Color.blue;
         OFFICIAL_COLOR = Color.blue;
         if(randomAge) {
-        	setAge(rand.nextInt(MAX_AGE));
-            foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
+        	max_age = SimulatorView.getLifeTimeFox();
+        	setAge(rand.nextInt(max_age));
+            foodLevel = rand.nextInt(SimulatorView.getFoodValueFox());
         }
         else {
         	setAge(0);
-            foodLevel = RABBIT_FOOD_VALUE;
+            foodLevel = SimulatorView.getFoodValueFox();
         }
     }
     
@@ -140,33 +135,41 @@ public class Fox extends Animal
         return null;
     }
     
+    /**
+     * Return the current color of the rabbit
+     * @return the color
+     */
     public Color getColor() {
     	return color;
     }
     
+    /**
+     * Return the regular color of the rabbit
+     * @return the color
+     */
     public Color getOfficialColor()
     {
     	return OFFICIAL_COLOR;
     }
     
-	@Override
+    @Override
 	protected int getBreedingAge() {
-		return BREEDING_AGE;
+		return SimulatorView.getBreedAgeFox();
 	}
 
 	@Override
 	protected int getMaxAge() {
-		return MAX_AGE;
+		return SimulatorView.getLifeTimeFox();
 	}
 
 	@Override
 	protected double getBreedingProbability() {
-		return BREEDING_PROBABILITY;
+		return ((double) SimulatorView.getBreedProbabilityFox()) / 100;
 	}
 
 	@Override
 	protected int getMaxLitterSize() {
-		return MAX_LITTER_SIZE;
+		return SimulatorView.getgetLitterSizeFox();
 	}
 	
 	@Override
