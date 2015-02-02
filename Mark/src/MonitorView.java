@@ -20,16 +20,20 @@ public class MonitorView extends JPanel {
 	public MonitorView() {
 		
 		pieChart = new PieChart3();
-		graphChart = new GraphView(350, 200);
+		graphChart = new GraphView(720, 220);
 		barChart = new BarGraph();
 		
 		JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
 		JPanel panel3 = new JPanel();
 		
-		panel1.setPreferredSize(new Dimension(200, 200));
-		panel2.setPreferredSize(new Dimension(350, 200));
-		panel3.setPreferredSize(new Dimension(200, 200));
+		panel1.setPreferredSize(new Dimension(250, 250));
+		panel2.setPreferredSize(new Dimension(720, 220));
+		panel3.setPreferredSize(new Dimension(200, 220));
+		
+		panel1.setBackground(Color.white);
+		panel2.setBackground(Color.white);
+		panel3.setBackground(Color.white);
 		
 		
 		panel1.setLayout(new BorderLayout());
@@ -41,9 +45,9 @@ public class MonitorView extends JPanel {
 		
 		setLayout(new BorderLayout());
 		add(panel1,BorderLayout.WEST);
-		add(panel2,BorderLayout.CENTER);
+		add(panel2,BorderLayout.SOUTH);
 		add(panel3, BorderLayout.EAST);
-		
+		setBackground(Color.white);
 		setVisible(true);
 	}
 	

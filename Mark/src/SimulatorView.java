@@ -107,11 +107,13 @@ public class SimulatorView extends JFrame
         fieldPanel.add(fieldView, BorderLayout.CENTER);
         fieldPanel.add(population, BorderLayout.SOUTH);
         
-        monitorView.setPreferredSize(new Dimension(150,320));
+        JPanel monitorWrap = new JPanel(new BorderLayout());
+        monitorWrap.add(monitorView, BorderLayout.SOUTH);
+        monitorWrap.setBackground(Color.white);
         
         tabbedPane.addTab("Field", fieldPanel);
         tabbedPane.addTab("Text", textView);
-        tabbedPane.addTab("Graph", monitorView);
+        tabbedPane.addTab("Graph", monitorWrap);
         
         panelright.setLayout(new BorderLayout());
         
@@ -170,7 +172,7 @@ public class SimulatorView extends JFrame
     public static Color getOfficialColor(Object animal) {
     	if(animal instanceof Bear || animal instanceof Fox || animal instanceof Rabbit) {
             Animal a = (Animal) animal;
-            return a.getColor();
+            return a.getOfficialColor();
         } else if(animal instanceof Hunter) {
         	Hunter h = (Hunter) animal;
         	return h.getOfficialColor();

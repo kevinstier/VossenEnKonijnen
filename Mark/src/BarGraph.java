@@ -38,7 +38,7 @@ public class BarGraph extends JComponent {
 			int heightOfBar = (int) (area.height / height);
 			
 			g.setColor(slices[i].color);
-			g.fillRect(i * deltaX,area.height - heightOfBar ,deltaX ,heightOfBar);
+			g.fillRect((i * deltaX) + 10,area.height - heightOfBar ,deltaX - 10 ,heightOfBar);
 		}
 	}
 }
