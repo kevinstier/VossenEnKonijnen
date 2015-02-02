@@ -54,10 +54,10 @@ public class SimulatorView extends JFrame
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
-        //logoImage = new ImageIcon(Simulator.class.getResource("/Legenda2.png"));
-        //legend = new JLabel(logoImage, JLabel.CENTER);
+        logoImage = new ImageIcon(Simulator.class.getResource("/Legenda3.png"));
+        legend = new JLabel(logoImage, JLabel.CENTER);
         
-        JPanel panelleft = new JPanel();
+        JPanel panelleft = new JPanel(new BorderLayout());
         step1 = new JButton("Step 1");
         step100 = new JButton("Step 100");
         step1000 = new JButton("Step 1000");
@@ -120,7 +120,7 @@ public class SimulatorView extends JFrame
         panelright.add(tabbedPane);
         
         panelleft.add(steps, BorderLayout.NORTH);
-        //panelleft.add(legend, BorderLayout.SOUTH);
+        panelleft.add(legend, BorderLayout.SOUTH);
         
         contents.add(panelright, BorderLayout.EAST);
         contents.add(panelleft, BorderLayout.WEST);

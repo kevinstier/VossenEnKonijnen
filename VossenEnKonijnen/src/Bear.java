@@ -19,7 +19,7 @@ public class Bear extends Animal
     // The age to which a Bear can live.
     private static final int MAX_AGE = 40;
     // The likelihood of a Bear breeding.
-    private static final double BREEDING_PROBABILITY = 0.02;
+    private static final double BREEDING_PROBABILITY = 0.04;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single rabbit. In effect, this is the
@@ -43,6 +43,7 @@ public class Bear extends Animal
     {
         super(field, location);
         color = Color.black;
+        OFFICIAL_COLOR = Color.black;
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
             foodLevel = rand.nextInt(FOOD_VALUE);
@@ -50,6 +51,25 @@ public class Bear extends Animal
         else {
             setAge(0);
             foodLevel = FOOD_VALUE;
+        }
+    }
+    
+    /**
+     * Check whether or not this rabbit is to give birth at this step.
+     * New births will be made into free adjacent locations.
+     * @param newRabbits A list to return newly born rabbits.
+     */
+    public void giveBirth(List<Actor> newBears)
+    {
+        // New rabbits are born into adjacent locations.
+        // Get a list of adjacent free locations.
+        Field field = getField();
+        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        int births = breed();
+        for(int b = 0; b < births && free.size() > 0; b++) {
+            Location loc = free.remove(0);
+            Bear young = new Bear(false, field, loc);
+            newBears.add(young);
         }
     }
     
@@ -130,6 +150,14 @@ public class Bear extends Animal
         return null;
     }
     
+    public Color getColor() {
+    	return color;
+    }
+    
+    public Color getOfficialColor()
+    {
+    	return OFFICIAL_COLOR;
+    }
 
 	@Override
 	protected int getBreedingAge() {

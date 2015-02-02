@@ -19,12 +19,12 @@ public class Fox extends Animal
     // The age to which a fox can live.
     private static final int MAX_AGE = 150;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
+    private static final double BREEDING_PROBABILITY = 0.35;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 2;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 9;
+    private static final int RABBIT_FOOD_VALUE = 10;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -43,6 +43,7 @@ public class Fox extends Animal
     {
         super(field, location);
         color = Color.blue;
+        OFFICIAL_COLOR = Color.blue;
         if(randomAge) {
         	setAge(rand.nextInt(MAX_AGE));
             foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
@@ -50,6 +51,25 @@ public class Fox extends Animal
         else {
         	setAge(0);
             foodLevel = RABBIT_FOOD_VALUE;
+        }
+    }
+    
+    /**
+     * Check whether or not this rabbit is to give birth at this step.
+     * New births will be made into free adjacent locations.
+     * @param newRabbits A list to return newly born rabbits.
+     */
+    public void giveBirth(List<Actor> newFoxes)
+    {
+        // New rabbits are born into adjacent locations.
+        // Get a list of adjacent free locations.
+        Field field = getField();
+        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        int births = breed();
+        for(int b = 0; b < births && free.size() > 0; b++) {
+            Location loc = free.remove(0);
+            Fox young = new Fox(false, field, loc);
+            newFoxes.add(young);
         }
     }
     
@@ -118,6 +138,15 @@ public class Fox extends Animal
             }
         }
         return null;
+    }
+    
+    public Color getColor() {
+    	return color;
+    }
+    
+    public Color getOfficialColor()
+    {
+    	return OFFICIAL_COLOR;
     }
     
 	@Override

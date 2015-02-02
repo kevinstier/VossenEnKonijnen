@@ -19,15 +19,15 @@ public class Rabbit extends Animal
     // The age to which a rabbit can live.
     private static final int MAX_AGE = 40;
     // The likelihood of a rabbit breeding.
-    private double breedingProbabilty = 0.12;
+    private double breedingProbabilty = 0.8;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 4;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     private final double INFECTION_CHANCE = 0.9;
     private boolean ziek;
-    private final double FIRST_INFECTED_CHANCE = 0.01;
-    private final int FIRST_INFECTED = 5;
+    private final int FIRST_INFECTED_CHANCE = 10;
+    private final int FIRST_INFECTED = 500;
     private int timeSick = 0;
     private final int MAX_TIME_SICK = 5;    
     private int counter;
@@ -51,11 +51,14 @@ public class Rabbit extends Animal
         super(field, location);
     	color = Color.orange;
     	OFFICIAL_COLOR = Color.orange;
-        setAge(0);
+        
         if(randomAge) {
         	setAge(rand.nextInt(MAX_AGE));
+        } else {
+        	setAge(0);
         }
-        int random = (rand.nextInt(100) + 1) / 100;
+        Random randomGenerator = new Random();
+        int random = randomGenerator.nextInt(100);
     	if( random <= FIRST_INFECTED_CHANCE && numberInfected < FIRST_INFECTED)
     	{
     		setZiekteGen(true);
@@ -69,7 +72,13 @@ public class Rabbit extends Animal
      */
     public void act(List<Actor> newRabbits)
     {
-    	if (timeSick < MAX_TIME_SICK) {
+    	if (getZiekteGen()){ 
+	    	if (timeSick < MAX_TIME_SICK) {
+	            timeSick++;
+	    	} else {
+	    		setDead();
+	    	}
+    	}
 	        incrementAge();
 	        if(isAlive()) {
 	        	checkFood();
@@ -77,11 +86,17 @@ public class Rabbit extends Animal
 	        		setBreedingProbabilty(LESS_BREEDING_PROBABILITY * this.breedingProbabilty);
 	        		counter = 0;
 	        	}
-	        	neighborInfected();
-	            giveBirth(newRabbits);            
+	        	if (neighborInfected()) {
+		        	if (ziekteGen()) {
+	            		setZiekteGen(true);
+	             	}
+	        	}
+	        	if (!getZiekteGen()) {
+	        		giveBirth(newRabbits);   
+	        	}
 	            // Move towards a source of food if found.
 	            Location newLocation = getField().freeAdjacentLocation(getLocation());
-	            timeSick++;
+
 	            if(newLocation != null) {
 	                setLocation(newLocation);
 	            }
@@ -90,9 +105,6 @@ public class Rabbit extends Animal
 	                setDead();
 	            }
 	        }
-    	} else {
-    		setDead();
-    	}
     }
     
     /**
@@ -136,7 +148,6 @@ public class Rabbit extends Animal
     	int random = (rand.nextInt(100) + 1) / 100;
     	if( random <= INFECTION_CHANCE)
     	{
-    		setZiekteGen(true);
     		return true;
     	}
     	return false;
@@ -154,8 +165,7 @@ public class Rabbit extends Animal
              if(animal instanceof Rabbit) {
                  Rabbit rabbit = (Rabbit) animal;
                  if(rabbit.getZiekteGen()) {
-                 	this.ziekteGen();
-                 	
+                 	return true;
                  }
              }
          }

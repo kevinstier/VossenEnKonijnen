@@ -140,6 +140,7 @@ public class Simulator
      */
     public void reset()
     {
+    	infected = 0;
         step = 0;
         actors.clear();
         populate();
