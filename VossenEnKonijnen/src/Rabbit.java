@@ -30,6 +30,8 @@ public class Rabbit extends Animal
     private boolean ziek;
     private final double FIRST_INFECTED_CHANCE = 0.1;
     private final int FIRST_INFECTED = 1;
+    private int timeSick = 0;
+    private final int MAX_TIME_SICK = 5;
     
     
     // Individual characteristics (instance fields).
@@ -66,20 +68,25 @@ public class Rabbit extends Animal
      */
     public void act(List<Actor> newRabbits)
     {
-        incrementAge();
-        incrementHunger();
-        if(isAlive()) {
-            giveBirth(newRabbits);            
-            // Move towards a source of food if found.
-            Location newLocation = findFood();
-            if(newLocation != null) {
-                setLocation(newLocation);
-            }
-            else {
-                // Overcrowding.
-                setDead();
-            }
-        }
+    	if (timeSick < MAX_TIME_SICK) {
+	        incrementAge();
+	        incrementHunger();
+	        if(isAlive()) {
+	            giveBirth(newRabbits);            
+	            // Move towards a source of food if found.
+	            Location newLocation = findFood();
+	            timeSick++;
+	            if(newLocation != null) {
+	                setLocation(newLocation);
+	            }
+	            else {
+	                // Overcrowding.
+	                setDead();
+	            }
+	        }
+    	} else {
+    		setDead();
+    	}
     }
     
     /**
