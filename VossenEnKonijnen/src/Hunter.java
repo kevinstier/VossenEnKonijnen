@@ -14,6 +14,7 @@ public class Hunter implements Actor {
     private int wait = 0;
     private final int WAIT_LIMIT = 3;
     private Color color;
+    private Color HUNTER_COLOR = Color.red;
 
 	/**
      * Create a hunter. 
@@ -60,6 +61,10 @@ public class Hunter implements Actor {
      */
     public Color getColor() {
     	return color;
+    }
+    
+    public Color getOfficialColor() {
+    	return HUNTER_COLOR;
     }
     
     private void setLocation(Location newLocation)

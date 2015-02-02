@@ -2,11 +2,7 @@ import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.awt.BorderLayout;
 import java.awt.Color;
-
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field
@@ -31,8 +27,6 @@ public class Simulator
  // The probability that a hunter will be created in any given grid position.
     private static final double HUNTER_CREATION_PROBABILITY = 0.01;  
     private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
-    // The possibility that grass will be created in any given grid position.
-    private static final double GRASS_CREATION_PROBABILITY = 0.008;
     private int infected = 0;
 
     // List of animals in the field.
@@ -70,15 +64,19 @@ public class Simulator
             width = DEFAULT_WIDTH;
         }
         
-        
         actors = new ArrayList<Actor>();
         field = new Field(depth, width);
 
+        
+        
         // Create a view of the state of each location in the field.
         stats = new FieldStats();
-        view = new SimulatorView(depth, width, stats);
         
-        monitorView = new MonitorView(view);
+        monitorView = new MonitorView();
+        TextView textView = stats.getTextView();
+        
+        view = new SimulatorView(depth, width, stats, monitorView, textView);
+        
         
         // Setup a valid starting point.
         reset();
@@ -129,8 +127,8 @@ public class Simulator
         actors.addAll(newActors);
 
         view.showStatus(step, field);
-        monitorView.update(actors, step);
         
+        monitorView.update(actors, step);
     }
     
     public SimulatorView getSimulatorView() {
@@ -142,7 +140,7 @@ public class Simulator
      */
     public void reset()
     {
-    	step = 0;
+        step = 0;
         actors.clear();
         populate();
         stats.hardReset();
@@ -171,8 +169,8 @@ public class Simulator
                 else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Rabbit rabbit = new Rabbit(true, field, location, infected);
-                    infected++;
                     actors.add(rabbit);
+                    infected++;
                 }
                 else if(rand.nextDouble() <= BEAR_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
@@ -184,11 +182,6 @@ public class Simulator
                     Location location = new Location(row, col);
                     Hunter hunter = new Hunter(field, location);
                     actors.add(hunter);
-                }
-                else if(rand.nextDouble() <= GRASS_CREATION_PROBABILITY){
-                	Location location = new Location(row, col);
-                	Grass grass = new Grass(field, location);
-                	actors.add(grass);
                 }
                 // else leave the location empty.
             }

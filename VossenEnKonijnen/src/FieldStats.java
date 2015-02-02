@@ -30,6 +30,10 @@ public class FieldStats
         textView = new TextView();
     }
     
+    public TextView getTextView() {
+    	return textView;
+    }
+    
     public void setStep (int step)
     {
     	this.step = step;

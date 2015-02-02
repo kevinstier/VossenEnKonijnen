@@ -23,6 +23,7 @@ public abstract class Animal implements Actor
     private int infected = 0;
     
     protected Color color;
+    protected Color OFFICIAL_COLOR;
     
     
     /**
@@ -53,6 +54,10 @@ public abstract class Animal implements Actor
     
     public Color getColor() {
     	return color;
+    }
+    
+    public Color getOfficialColor() {
+    	return OFFICIAL_COLOR;
     }
     
     protected void setDead()

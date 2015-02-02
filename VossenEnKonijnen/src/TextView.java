@@ -1,13 +1,14 @@
-import javax.swing.JComponent;
 import javax.swing.JFrame;  
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;  
 import javax.swing.text.DefaultCaret;
   
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;  
   
-public class TextView
+public class TextView extends JPanel
 {
 
 	JTextArea textArea1;
@@ -18,23 +19,20 @@ public class TextView
 		textArea1=new JTextArea();  
 		  
 		//Create a JFrame with title ( Add JTextArea into JFrame )  
-		JFrame frame=new JFrame("TextView");  
 		  
 		//Set JFrame layout  
-		frame.setLayout(new GridLayout());  
-		  
+		setLayout(new GridLayout());  
 		//Add first JTextArea into JFrame  
 		JScrollPane sp = new JScrollPane(textArea1); 
-		frame.add(sp);   
+		add(sp);   
 		  
 		//Set default close operation for JFrame  
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 		  
 		//Set JFrame size  
-		frame.setSize(400,500);  
+		setSize(400,500);  
 		  
 		//Make JFrame visible. So we can see it.  
-		frame.setVisible(true);  
+		setVisible(true);  
 		
 		textArea1.setEditable(false);
 		textArea1.setLineWrap(true);
@@ -48,7 +46,7 @@ public class TextView
 	 * @param str
 	 */
 	public void println(String str) {
-		print(str + " ");
+		print(str + "\n");
 	}
 	
 	/**

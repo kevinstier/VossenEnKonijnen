@@ -42,7 +42,7 @@ public class SimulatorView extends JFrame
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width, FieldStats fieldStats)
+    public SimulatorView(int height, int width, FieldStats fieldStats, MonitorView monitorView, TextView textView)
     {
         stats = fieldStats;
         colors = new LinkedHashMap<Class, Color>();
@@ -54,10 +54,10 @@ public class SimulatorView extends JFrame
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
-        logoImage = new ImageIcon(Simulator.class.getResource("/Legenda3.png"));
-        legend = new JLabel(logoImage, JLabel.CENTER);
+        //logoImage = new ImageIcon(Simulator.class.getResource("/Legenda2.png"));
+        //legend = new JLabel(logoImage, JLabel.CENTER);
         
-        JPanel panelleft = new JPanel(new BorderLayout());
+        JPanel panelleft = new JPanel();
         step1 = new JButton("Step 1");
         step100 = new JButton("Step 100");
         step1000 = new JButton("Step 1000");
@@ -100,12 +100,24 @@ public class SimulatorView extends JFrame
 
         contents = getContentPane();
         
-        panelright.add(stepLabel, BorderLayout.NORTH);
-        panelright.add(fieldView, BorderLayout.CENTER);
-        panelright.add(population, BorderLayout.SOUTH);
+        JPanel fieldPanel = new JPanel(new BorderLayout());
+        JTabbedPane tabbedPane = new JTabbedPane();
+        
+        fieldPanel.add(stepLabel, BorderLayout.NORTH);
+        fieldPanel.add(fieldView, BorderLayout.CENTER);
+        fieldPanel.add(population, BorderLayout.SOUTH);
+        
+        monitorView.setPreferredSize(new Dimension(150,320));
+        
+        tabbedPane.addTab("Field", fieldPanel);
+        tabbedPane.addTab("Text", textView);
+        
+        panelright.setLayout(new BorderLayout());
+        
+        panelright.add(tabbedPane);
         
         panelleft.add(steps, BorderLayout.NORTH);
-        panelleft.add(legend, BorderLayout.SOUTH);
+        //panelleft.add(legend, BorderLayout.SOUTH);
         
         contents.add(panelright, BorderLayout.EAST);
         contents.add(panelleft, BorderLayout.WEST);
@@ -143,13 +155,24 @@ public class SimulatorView extends JFrame
     	this.reset.setEnabled(true);
     }
     
-    public Color getColor(Object animal) {
+    public static Color getColor(Object animal) {
     	if(animal instanceof Bear || animal instanceof Fox || animal instanceof Rabbit) {
             Animal a = (Animal) animal;
             return a.getColor();
         } else if(animal instanceof Hunter) {
         	Hunter h = (Hunter) animal;
         	return h.getColor();
+        }
+		return null;
+    }
+    
+    public static Color getOfficialColor(Object animal) {
+    	if(animal instanceof Bear || animal instanceof Fox || animal instanceof Rabbit) {
+            Animal a = (Animal) animal;
+            return a.getOfficialColor();
+        } else if(animal instanceof Hunter) {
+        	Hunter h = (Hunter) animal;
+        	return h.getOfficialColor();
         }
 		return null;
     }

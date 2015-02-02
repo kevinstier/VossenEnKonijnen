@@ -36,9 +36,8 @@ public class GraphView
      * @param class1 The first class to be plotted.
      * @param width The second class to be plotted.
      */
-    public GraphView(int height, int width, FieldStats fieldStats)
+    public GraphView(int height, int width)
     {
-        stats = fieldStats;
         classes = new HashSet<Class>();
         colors = new HashMap<Class, Color>();
         
@@ -71,18 +70,9 @@ public class GraphView
      * @param step Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, java.util.List<Actor> actors, SimulatorView view)
+    public void showStatus(int step, java.util.List<Actor> actors)
     {
-        graph.update(step, actors, view);
-    }
-
-    /**
-     * Determine whether the simulation should continue to run.
-     * @return true If there is more than one species alive.
-     */
-    public boolean isViable(Field field)
-    {
-        return stats.isViable(field);
+        graph.update(step, actors);
     }
 
     /**
@@ -140,9 +130,9 @@ public class GraphView
         /**
          * Dispay a new point of data.
          */
-        public void update(int step, java.util.List<Actor> actors, SimulatorView view)
+        public void update(int step, java.util.List<Actor> actors)
         {
-        	Slice[] slices = PieChartView.getSlices(actors, view);
+        	Slice[] slices = MonitorView.getSlices(actors, true);
         	
         	for(int i = 0; i < slices.length; i++) {
         		Graphics ga = graphImage.getGraphics();

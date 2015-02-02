@@ -31,8 +31,7 @@ public class Rabbit extends Animal
     private final double FIRST_INFECTED_CHANCE = 0.1;
     private final int FIRST_INFECTED = 1;
     private int timeSick = 0;
-    private final int MAX_TIME_SICK = 5;
-    
+    private final int MAX_TIME_SICK = 5;    
     
     // Individual characteristics (instance fields).
     
@@ -49,6 +48,7 @@ public class Rabbit extends Animal
     {
         super(field, location);
     	color = Color.orange;
+    	OFFICIAL_COLOR = Color.orange;
         setAge(0);
         if(randomAge) {
         	setAge(rand.nextInt(MAX_AGE));
@@ -165,6 +165,11 @@ public class Rabbit extends Animal
 
     public Color getColor() {
     	return color;
+    }
+    
+    public Color getOfficialColor()
+    {
+    	return OFFICIAL_COLOR;
     }
 
 	@Override

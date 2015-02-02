@@ -11,21 +11,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class MonitorView extends JFrame {
-	SimulatorView simView;
+public class MonitorView extends JPanel {
 	PieChart3 pieChart;
 	GraphView graphChart;
 	BarGraph barChart;
 	
 	
-	public MonitorView(SimulatorView view) {
-		simView = view;
-		setTitle("MonitorView");
-		setResizable(false);
+	public MonitorView() {
 		
 		pieChart = new PieChart3();
-		graphChart = new GraphView(350, 200, view.getStats());
-		barChart = new BarGraph(view);
+		graphChart = new GraphView(350, 200);
+		barChart = new BarGraph();
 		
 		JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
@@ -35,7 +31,6 @@ public class MonitorView extends JFrame {
 		panel2.setPreferredSize(new Dimension(350, 200));
 		panel3.setPreferredSize(new Dimension(200, 200));
 		
-		Container content = getContentPane();
 		
 		panel1.setLayout(new BorderLayout());
 		panel1.add(pieChart, BorderLayout.CENTER);
@@ -44,27 +39,26 @@ public class MonitorView extends JFrame {
 		panel3.setLayout(new BorderLayout());
 		panel3.add(barChart, BorderLayout.CENTER);
 		
-		content.setLayout(new BorderLayout());
-		content.add(panel1,BorderLayout.WEST);
-		content.add(panel2,BorderLayout.CENTER);
-		content.add(panel3, BorderLayout.EAST);
+		setLayout(new BorderLayout());
+		add(panel1,BorderLayout.WEST);
+		add(panel2,BorderLayout.CENTER);
+		add(panel3, BorderLayout.EAST);
 		
-		pack();
 		setVisible(true);
 	}
 	
 	public void update(List<Actor> actors, int step) {
 		
-		Slice[] slices = getSlices(actors, simView);
+		Slice[] slices = getSlices(actors, true);
 		
 		pieChart.updateChart(slices);
-        graphChart.showStatus(step, actors, simView);
+        graphChart.showStatus(step, actors);
         barChart.update(slices);
         
         
 	}
 	
-	private Slice[] getSlices(List<Actor> actors, SimulatorView view) {
+	public static Slice[] getSlices(List<Actor> actors, boolean official) {
 		HashMap<String, ArrayList<Actor>> orderedList = new HashMap<String, ArrayList<Actor>>();
 		ArrayList<String> reminder = new ArrayList<String>();
 		
@@ -86,7 +80,11 @@ public class MonitorView extends JFrame {
 		Collections.sort(reminder);
 		for(int i = 0; i < reminder.size(); i++) {
 			int count = orderedList.get(reminder.get(i)).size();
-			slices[i] = new Slice(count, view.getColor(orderedList.get(reminder.get(i)).get(0)));
+			if(official) {
+				slices[i] = new Slice(count, SimulatorView.getOfficialColor(orderedList.get(reminder.get(i)).get(0)));
+			} else {
+				slices[i] = new Slice(count, SimulatorView.getColor(orderedList.get(reminder.get(i)).get(0)));
+			}
 		}
 		return slices;
 	}
