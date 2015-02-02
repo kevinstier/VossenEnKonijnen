@@ -27,7 +27,7 @@ public class Simulator
  // The probability that a hunter will be created in any given grid position.
     private static final double HUNTER_CREATION_PROBABILITY = 0.01;  
     private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
-    private int infected = 0;
+    private static int infected = 0;
 
     // List of animals in the field.
     private List<Actor> actors;
@@ -149,6 +149,11 @@ public class Simulator
         view.showStatus(step, field);
         
         monitorView.update(actors, step);
+    }
+    
+    public static int getInfected()
+    {
+    	return infected;
     }
     
     /**

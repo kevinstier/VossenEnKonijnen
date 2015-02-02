@@ -19,19 +19,21 @@ public class Rabbit extends Animal
     // The age to which a rabbit can live.
     private static final int MAX_AGE = 40;
     // The likelihood of a rabbit breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
+    private double breedingProbabilty = 0.12;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 4;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    private static int GRASS_FOOD_VALUE = 5;
-    private int foodLevel;
     private final double INFECTION_CHANCE = 0.9;
     private boolean ziek;
-    private final double FIRST_INFECTED_CHANCE = 0.1;
-    private final int FIRST_INFECTED = 1;
+    private final double FIRST_INFECTED_CHANCE = 0.01;
+    private final int FIRST_INFECTED = 5;
     private int timeSick = 0;
     private final int MAX_TIME_SICK = 5;    
+    private int counter;
+    private final int MIN_FREE_SPACE = 2;
+    private final double LESS_BREEDING_PROBABILITY = 0.5;
+    
     
     // Individual characteristics (instance fields).
     
@@ -53,7 +55,6 @@ public class Rabbit extends Animal
         if(randomAge) {
         	setAge(rand.nextInt(MAX_AGE));
         }
-        foodLevel = GRASS_FOOD_VALUE;
         int random = (rand.nextInt(100) + 1) / 100;
     	if( random <= FIRST_INFECTED_CHANCE && numberInfected < FIRST_INFECTED)
     	{
@@ -70,11 +71,16 @@ public class Rabbit extends Animal
     {
     	if (timeSick < MAX_TIME_SICK) {
 	        incrementAge();
-	        incrementHunger();
 	        if(isAlive()) {
+	        	checkFood();
+	        	if (counter >= MIN_FREE_SPACE) {
+	        		setBreedingProbabilty(LESS_BREEDING_PROBABILITY * this.breedingProbabilty);
+	        		counter = 0;
+	        	}
+	        	neighborInfected();
 	            giveBirth(newRabbits);            
 	            // Move towards a source of food if found.
-	            Location newLocation = findFood();
+	            Location newLocation = getField().freeAdjacentLocation(getLocation());
 	            timeSick++;
 	            if(newLocation != null) {
 	                setLocation(newLocation);
@@ -90,13 +96,38 @@ public class Rabbit extends Animal
     }
     
     /**
-     * Make this fox more hungry. This could result in the fox's death.
+     * Check whether or not this rabbit is to give birth at this step.
+     * New births will be made into free adjacent locations.
+     * @param newRabbits A list to return newly born rabbits.
      */
-    private void incrementHunger()
+    public void giveBirth(List<Actor> newRabbits)
     {
-        foodLevel--;
-        if(foodLevel <= 0) {
-            setDead();
+        // New rabbits are born into adjacent locations.
+        // Get a list of adjacent free locations.
+        Field field = getField();
+        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        int births = breed();
+        for(int b = 0; b < births && free.size() > 0; b++) {
+            Location loc = free.remove(0);
+            Rabbit young = new Rabbit(false, field, loc, Simulator.getInfected());
+            newRabbits.add(young);
+        }
+    }
+    
+    public void checkFood()
+    {
+    	Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Object animal = field.getObjectAt(where);
+            if(animal instanceof Rabbit) {
+                Rabbit rabbit = (Rabbit) animal;
+                if(rabbit.isAlive()) { 
+                    counter++;
+                }
+            }
         }
     }
     
@@ -123,7 +154,7 @@ public class Rabbit extends Animal
              if(animal instanceof Rabbit) {
                  Rabbit rabbit = (Rabbit) animal;
                  if(rabbit.getZiekteGen()) {
-                 	ziekteGen();
+                 	this.ziekteGen();
                  	
                  }
              }
@@ -131,26 +162,10 @@ public class Rabbit extends Animal
          return false;
     }
     
-    private Location findFood()
-	{
-		Field field = getField();
-		List<Location> adjacent = field.adjacentLocations(getLocation());
-		Iterator<Location> it = adjacent.iterator();
-		while(it.hasNext()) {
-			Location where = it.next();
-			Object animal = field.getObjectAt(where);
-			if(animal instanceof Grass) {
-				Grass grass = (Grass) animal;
-				if(grass.isAlive()) {
-					grass.setDead();
-					foodLevel = GRASS_FOOD_VALUE;
-					// Remove the dead piece of grass from the field.
-					return where;
-				}
-			}
-		}
-		return null;
-	}
+    public void setBreedingProbabilty(double breedingProbabilty)
+    {
+    	this.breedingProbabilty = breedingProbabilty;
+    }
     
     public boolean getZiekteGen()
     {
@@ -184,7 +199,7 @@ public class Rabbit extends Animal
 	
 	@Override
 	protected double getBreedingProbability() {
-		return BREEDING_PROBABILITY;
+		return breedingProbabilty;
 	}
 	
 	@Override
