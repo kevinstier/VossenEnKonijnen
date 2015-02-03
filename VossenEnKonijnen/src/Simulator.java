@@ -17,17 +17,7 @@ public class Simulator
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
-    private static final int DEFAULT_DEPTH = 80;
-    // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
-    // The probability that a rabbit will be created in any given grid position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;   
-    // The probability that a bear will be created in any given grid position.
-    private static final double BEAR_CREATION_PROBABILITY = 0.01;  
-    // The probability that a hunter will be created in any given grid position.
-    private static final double HUNTER_CREATION_PROBABILITY = 0.01;
-    // The maximum amount of hunters
-    private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30; 
+    private static final int DEFAULT_DEPTH = 80; 
     // The number of infected rabbit at the start
     private static int infected = 0;
 
@@ -167,6 +157,10 @@ public class Simulator
         SimulatorView.breedProbabilityBear.setValue(2);
         SimulatorView.foodValueFox.setValue(9);
         SimulatorView.foodValueBear.setValue(11);
+        SimulatorView.waitLimitHunter.setValue(7);
+        SimulatorView.bulletLimitHunter.setValue(3);
+        SimulatorView.infectionChance.setValue(90);
+        SimulatorView.stepsBeforeDeath.setValue(5);
     }
     
     public static int getInfected()
@@ -184,23 +178,23 @@ public class Simulator
         int huntersCreated = 0;
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
+                if(rand.nextDouble() <= ((double) SimulatorView.getCreationChanceFox()) / 100) {
                     Location location = new Location(row, col);
                     Fox fox = new Fox(true, field, location);
                     actors.add(fox);
                 }
-                else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= ((double) SimulatorView.getCreationChanceRabbit()) / 100) {
                     Location location = new Location(row, col);
                     Rabbit rabbit = new Rabbit(true, field, location, infected);
                     actors.add(rabbit);
                     infected++;
                 }
-                else if(rand.nextDouble() <= BEAR_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= ((double) SimulatorView.getCreationChanceBear()) / 100) {
                     Location location = new Location(row, col);
                     Bear bear = new Bear(true, field, location);
                     actors.add(bear);
                 }
-                else if(rand.nextDouble() <= HUNTER_CREATION_PROBABILITY && huntersCreated < MAXIUM_AMOUNT_OF_HUNTERS) {
+                else if(rand.nextDouble() <= (((double) SimulatorView.getCreationChanceHunter()) / 100) && huntersCreated < SimulatorView.getMaximumAmountHunters()) {
                 	huntersCreated++;
                     Location location = new Location(row, col);
                     Hunter hunter = new Hunter(field, location);

@@ -31,6 +31,11 @@ public class SimulatorView extends JFrame
     private Icon logoImage;
     private Container contents;
     
+    public static Configuration creationChanceRabbit;
+    public static Configuration creationChanceFox;
+    public static Configuration creationChanceBear;
+    public static Configuration creationChanceHunter;
+    public static Configuration maximumAmountHunters;
     public static Configuration lifeTimeRabbit;
     public static Configuration lifeTimeFox;
     public static Configuration lifeTimeBear;
@@ -85,6 +90,11 @@ public class SimulatorView extends JFrame
         GridBagConstraints cst = new GridBagConstraints();
         cst.fill = GridBagConstraints.BOTH;
         
+        creationChanceRabbit = new Configuration("Creation chance Rabbit",0,100,8);
+        creationChanceFox = new Configuration("Creation chance Fox",0,100,2);
+        creationChanceBear = new Configuration("Creation chance Bear",0,100,1);
+        creationChanceHunter = new Configuration("Creation chance Hunter",0,100,1);
+        maximumAmountHunters = new Configuration("Maximum amount Hunter",0,100,30);
         lifeTimeRabbit = new Configuration("Lifetime Rabbit",0,100,40);
         lifeTimeFox = new Configuration("Lifetime Fox",0,100,90);
     	lifeTimeBear = new Configuration("Lifetime Bear",0,100,40);
@@ -149,6 +159,9 @@ public class SimulatorView extends JFrame
         monitorWrap.setBackground(Color.white);
         
         Settings settings = new Settings();
+        settings.add(creationChanceRabbit);
+        settings.add(creationChanceFox);
+        settings.add(creationChanceBear);
         settings.add(lifeTimeRabbit);
         settings.add(lifeTimeFox);
         settings.add(lifeTimeBear);
@@ -163,15 +176,16 @@ public class SimulatorView extends JFrame
         settings.add(litterSizeBear);
         settings.add(foodValueFox);
         settings.add(foodValueBear);
+        settings.add(creationChanceHunter);
         settings.add(bulletLimitHunter);
         settings.add(waitLimitHunter);
         settings.add(infectionChance);
         settings.add(stepsBeforeDeath);
+        settings.add(maximumAmountHunters);
         
         tabbedPane.addTab("Field", fieldPanel);
         tabbedPane.addTab("Text", textView);
         tabbedPane.addTab("Graph", monitorWrap);
-        tabbedPane.addTab("Settings", settings);
         
         panelright.setLayout(new BorderLayout());
         
@@ -468,5 +482,19 @@ public class SimulatorView extends JFrame
 	public static int getStepsBeforeDeath() {
 		return stepsBeforeDeath.getValue();
 	}
-	
+	public static int getCreationChanceFox() {
+		return creationChanceFox.getValue();
+	}
+	public static int getCreationChanceRabbit() {
+		return creationChanceRabbit.getValue();
+	}
+	public static int getCreationChanceBear() {
+		return creationChanceBear.getValue();
+	}
+	public static int getCreationChanceHunter() {
+		return creationChanceHunter.getValue();
+	}
+	public static int getMaximumAmountHunters() {
+		return maximumAmountHunters.getValue();
+	}
 }

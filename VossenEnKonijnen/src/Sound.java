@@ -10,9 +10,9 @@ public static void play()
 			  {
 			    // open the sound file as a Java input stream
 	             
-	            InputStream in1 = new FileInputStream("/Users/Ronald/workspace/audio/sound1.wav");
-	            InputStream in2 = new FileInputStream("/Users/Ronald/workspace/audio/sound2.wav");
-	            InputStream in3 = new FileInputStream("/Users/Ronald/workspace/audio/sound3.wav");
+	            InputStream in1 = new FileInputStream("/sound1.wav");
+	            InputStream in2 = new FileInputStream("/sound2.wav");
+	            InputStream in3 = new FileInputStream("/sound3.wav");
 	            AudioStream audioStream1 = new AudioStream(in1);
 				AudioStream as1 = audioStream1;
 			    AudioStream audioStream2 = new AudioStream(in2);

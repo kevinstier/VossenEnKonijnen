@@ -4,12 +4,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class Settings extends JPanel {
+public class Settings extends JFrame {
 	public Settings() {
-		 setName("Settings" );	
-		    setSize(500, 500);
-		    setLayout(new GridLayout(6, 2, 15, 0));
-		    setVisible(true);
+		 setTitle("Settings" );	
+		 setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		 setLayout(new GridLayout(6, 2, 15, 0));
+		 setVisible(true);
 		 
 	}
 

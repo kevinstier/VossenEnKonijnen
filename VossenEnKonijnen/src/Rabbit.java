@@ -95,9 +95,8 @@ public class Rabbit extends Animal
 	            		setZiekteGen(true);
 	             	}
 	        	}
-	        	if (!getZiekteGen()) {
 	        		giveBirth(newRabbits);   
-	        	}
+
 	            // Move towards a source of food if found.
 	            Location newLocation = getField().freeAdjacentLocation(getLocation());
 
@@ -127,6 +126,9 @@ public class Rabbit extends Animal
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Rabbit young = new Rabbit(false, field, loc, Simulator.getInfected());
+            if (getZiekteGen()) {
+            	young.setZiekteGen(true);
+            }
             newRabbits.add(young);
         }
     }
