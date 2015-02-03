@@ -1,7 +1,6 @@
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 /**
  * Create a frame for the sliders
