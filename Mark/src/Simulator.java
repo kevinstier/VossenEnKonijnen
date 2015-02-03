@@ -135,7 +135,7 @@ public class Simulator
     }
     
     public void totalExtinction() {
-    	JOptionPane.showMessageDialog(null, "GAME OVER!\nOnly hunters are alive. Reset the simulation to start again.", "Total Extiction", JOptionPane.WARNING_MESSAGE);
+    	JOptionPane.showMessageDialog(null, "GAME OVER!\nOnly hunters are alive. Reset the simulation to start again.", "Total Extinction", JOptionPane.WARNING_MESSAGE);
     	view.disableButtons();
     	view.getResetButton().setEnabled(true);
     }
@@ -203,7 +203,7 @@ public class Simulator
         	int randomNumber = r.nextInt(high-low) + low;
         	Rabbit chosenRabbit = rabbits.get(randomNumber);
         	chosenRabbit.setZiekteGen(true);
-        	chosenRabbit.setLocation(chosenRabbit.getLocation());
+        	view.showStatus(step, field);
         }
     }
     
