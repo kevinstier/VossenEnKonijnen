@@ -46,7 +46,7 @@ public class TextView extends JPanel
 	 * @param str
 	 */
 	public void println(String str) {
-		print(str + "\n");
+		print(str + " ");
 	}
 	
 	/**

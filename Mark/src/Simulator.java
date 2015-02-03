@@ -2,7 +2,8 @@ import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.awt.Color;
+
+import javax.swing.JOptionPane;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field
@@ -18,15 +19,6 @@ public class Simulator
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
-    // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
-    // The probability that a rabbit will be created in any given grid position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;   
-    // The probability that a bear will be created in any given grid position.
-    private static final double BEAR_CREATION_PROBABILITY = 0.01;  
- // The probability that a hunter will be created in any given grid position.
-    private static final double HUNTER_CREATION_PROBABILITY = 0.01;  
-    private static final int MAXIUM_AMOUNT_OF_HUNTERS = 30;  
 
     // List of animals in the field.
     private List<Actor> actors;
@@ -38,7 +30,7 @@ public class Simulator
     private SimulatorView view;
     // A pie chart of the simulation.
     private MonitorView monitorView;
-    
+    // The fieldstats for the simulation
     private FieldStats stats;
     
     /**
@@ -82,24 +74,19 @@ public class Simulator
     }
     
     /**
-     * Run the simulation from its current state for a reasonably long period,
-     * (4000 steps).
-     */
-    public void runLongSimulation()
-    {
-        simulate(100);
-    }
-    
-    /**
      * Run the simulation from its current state for the given number of steps.
      * Stop before the given number of steps if it ceases to be viable.
      * @param numSteps The number of steps to run for.
      */
-    public void simulate(int numSteps)
+    public boolean simulate(int numSteps)
     {
         for(int step = 1; step <= numSteps && view.isViable(field); step++) {
-            simulateOneStep();
+            if(!simulateOneStep()) {
+            	totalExtinction();
+            	return false;
+            }
         }
+        return true;
     }
     
     /**
@@ -107,7 +94,7 @@ public class Simulator
      * Iterate over the whole field updating the state of each
      * fox and rabbit.
      */
-    public void simulateOneStep()
+    public boolean simulateOneStep()
     {
         step++;
 
@@ -128,8 +115,35 @@ public class Simulator
         view.showStatus(step, field);
         
         monitorView.update(actors, step);
+        
+        if(checkTotalExtinction(actors)) {
+        	return false;
+        }
+        
+        return true;
     }
     
+    public boolean checkTotalExtinction(List<Actor> actors) {
+    	
+    	for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
+            Actor actor = it.next();
+            if(!(actor instanceof Hunter)) {
+            	return false;
+            }
+        }
+    	return true;
+    }
+    
+    public void totalExtinction() {
+    	JOptionPane.showMessageDialog(null, "GAME OVER!\nOnly hunters are alive. Reset the simulation to start again.", "Total Extiction", JOptionPane.WARNING_MESSAGE);
+    	view.disableButtons();
+    	view.getResetButton().setEnabled(true);
+    }
+    
+    /**
+     * Get the simulatorview
+     * @return the simulatorview
+     */
     public SimulatorView getSimulatorView() {
     	return this.view;
     }
@@ -144,11 +158,55 @@ public class Simulator
         populate();
         stats.hardReset();
         
+        view.enableButtons();
         // Show the starting state in the view.
         view.showStatus(step, field);
         
         monitorView.update(actors, step);
+        
+        // Reset the sliders
+        SimulatorView.lifeTimeRabbit.setValue(40);
+        SimulatorView.lifeTimeFox.setValue(90);
+        SimulatorView.lifeTimeBear.setValue(40);
+        SimulatorView.breedAgeRabbit.setValue(5);
+        SimulatorView.breedAgeFox.setValue(15);
+        SimulatorView.breedAgeBear.setValue(4);
+        SimulatorView.litterSizeRabbit.setValue(4);
+        SimulatorView.litterSizeFox.setValue(6);
+        SimulatorView.litterSizeBear.setValue(4);
+        SimulatorView.breedProbabilityRabbit.setValue(80);
+        SimulatorView.breedProbabilityFox.setValue(8);
+        SimulatorView.breedProbabilityBear.setValue(2);
+        SimulatorView.foodValueFox.setValue(9);
+        SimulatorView.foodValueBear.setValue(11);
+        SimulatorView.waitLimitHunter.setValue(7);
+        SimulatorView.bulletLimitHunter.setValue(3);
+        SimulatorView.infectionChance.setValue(90);
+        SimulatorView.stepsBeforeDeath.setValue(5);
     }
+    
+    public void makeRandomRabbitIll() {
+    	ArrayList<Rabbit> rabbits = new ArrayList<Rabbit>();         
+        // Let all rabbits act.
+        for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
+            Actor actor = it.next();
+            if(actor instanceof Rabbit) {
+            	Rabbit rabbit = (Rabbit) actor;
+                rabbits.add(rabbit);
+            }
+        }
+        int length = rabbits.size();
+        if(length > 0) {
+        	Random r = new Random();
+        	int low = 1;
+        	int high = length + 1;
+        	int randomNumber = r.nextInt(high-low) + low;
+        	Rabbit chosenRabbit = rabbits.get(randomNumber);
+        	chosenRabbit.setZiekteGen(true);
+        	chosenRabbit.setLocation(chosenRabbit.getLocation());
+        }
+    }
+    
     
     /**
      * Randomly populate the field with foxes and rabbits.
@@ -160,22 +218,22 @@ public class Simulator
         int huntersCreated = 0;
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
+                if(rand.nextDouble() <= ((double) SimulatorView.getCreationChanceFox()) / 100) {
                     Location location = new Location(row, col);
                     Fox fox = new Fox(true, field, location);
                     actors.add(fox);
                 }
-                else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= ((double) SimulatorView.getCreationChanceRabbit()) / 100) {
                     Location location = new Location(row, col);
                     Rabbit rabbit = new Rabbit(true, field, location);
                     actors.add(rabbit);
                 }
-                else if(rand.nextDouble() <= BEAR_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= ((double) SimulatorView.getCreationChanceBear()) / 100) {
                     Location location = new Location(row, col);
                     Bear bear = new Bear(true, field, location);
                     actors.add(bear);
                 }
-                else if(rand.nextDouble() <= HUNTER_CREATION_PROBABILITY && huntersCreated < MAXIUM_AMOUNT_OF_HUNTERS) {
+                else if(rand.nextDouble() <= (((double) SimulatorView.getCreationChanceHunter()) / 100) && huntersCreated < SimulatorView.getMaximumAmountHunters()) {
                 	huntersCreated++;
                     Location location = new Location(row, col);
                     Hunter hunter = new Hunter(field, location);

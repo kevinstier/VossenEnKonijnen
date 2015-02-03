@@ -22,8 +22,7 @@ public abstract class Animal implements Actor
     private static final Random rand = Randomizer.getRandom();
     
     protected Color color;
-    
-    protected Color officialColor;
+    protected Color OFFICIAL_COLOR;
     
     
     /**
@@ -45,20 +44,27 @@ public abstract class Animal implements Actor
      * @param newAnimals A list to receive newly born animals.
      */
     abstract public void act(List<Actor> newActors);
-
-
+    
+    /**
+     * Returns the current color of the animal.
+     * @return	The animals current color
+     */
+    public Color getColor() {
+    	return color;
+    }
+    
+    /**
+     * Returns the official color linked to the kind of animal.
+     * @return	The animals official color
+     */
+    public Color getOfficialColor() {
+    	return OFFICIAL_COLOR;
+    }
+    
     /**
      * Indicate that the animal is no longer alive.
      * It is removed from the field.
      */
-    
-    public Color getColor() {
-    	return color;
-    }
-    public Color getOfficialColor() {
-    	return officialColor;
-    }
-    
     protected void setDead()
     {
         alive = false;
@@ -202,7 +208,11 @@ public abstract class Animal implements Actor
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+	
+	/**
+     * Returns if animal is alive. False by default;
+     * @return false.
+     */
 	public boolean isAlive() {
 		return false;
 	}
