@@ -22,15 +22,20 @@ public class SimulatorView extends JFrame
 
     // Color used for objects that have no defined color.
     private static final Color UNKNOWN_COLOR = Color.gray;
-
     private final String STEP_PREFIX = "Step: ";
     private final String POPULATION_PREFIX = "Population: ";
+    // Initiate labels
     private JLabel stepLabel, population, legend;
+    // Initiate buttons
     private JButton step1, step100, step1000, reset;
+    // Fieldview
     private FieldView fieldView;
+    // Icon
     private Icon logoImage;
+    // Container
     private Container contents;
     
+    // Initiate the sliders
     public static Configuration creationChanceRabbit;
     public static Configuration creationChanceFox;
     public static Configuration creationChanceBear;
@@ -90,6 +95,7 @@ public class SimulatorView extends JFrame
         GridBagConstraints cst = new GridBagConstraints();
         cst.fill = GridBagConstraints.BOTH;
         
+        // Make the sliders
         creationChanceRabbit = new Configuration("Creation chance Rabbit",0,100,8);
         creationChanceFox = new Configuration("Creation chance Fox",0,100,2);
         creationChanceBear = new Configuration("Creation chance Bear",0,100,1);
@@ -158,6 +164,7 @@ public class SimulatorView extends JFrame
         monitorWrap.add(monitorView, BorderLayout.SOUTH);
         monitorWrap.setBackground(Color.white);
         
+        // Add sliders to the settings frame
         Settings settings = new Settings();
         settings.add(creationChanceRabbit);
         settings.add(creationChanceFox);
@@ -183,6 +190,7 @@ public class SimulatorView extends JFrame
         settings.add(stepsBeforeDeath);
         settings.add(maximumAmountHunters);
         
+        // Add pages to tabbedpane
         tabbedPane.addTab("Field", fieldPanel);
         tabbedPane.addTab("Text", textView);
         tabbedPane.addTab("Graph", monitorWrap);
@@ -421,6 +429,11 @@ public class SimulatorView extends JFrame
             }
         }
     }
+    
+    /**
+     * Getters for the values of the slider
+     * @return the value
+     */
     
     public static int getLifeTimeRabbit() {
 		return lifeTimeRabbit.getValue();

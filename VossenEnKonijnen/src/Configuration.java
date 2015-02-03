@@ -2,6 +2,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
+/**
+ * Create the sliders and initialize them
+ * @author Ronald Elzen
+ *
+ */
 
 public class Configuration extends JPanel{
 	private JSlider a;
@@ -22,10 +27,18 @@ public class Configuration extends JPanel{
 		 add(a);
 	}
 	
+	/**
+	 * Get the value of the slider
+	 * @return the value
+	 */
 	public int getValue() {
 		return a.getValue();
 	}
 	
+	/**
+	 * Set the value of the sliders
+	 * @param value
+	 */
 	public void setValue(int value)
 	{
 		a.setValue(value);
