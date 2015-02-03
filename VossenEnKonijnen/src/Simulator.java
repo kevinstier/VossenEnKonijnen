@@ -2,7 +2,6 @@ import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.awt.Color;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field
@@ -123,6 +122,10 @@ public class Simulator
         monitorView.update(actors, step);
     }
     
+    /**
+     * Get the simulatorview
+     * @return the simulatorview
+     */
     public SimulatorView getSimulatorView() {
     	return this.view;
     }
@@ -143,6 +146,7 @@ public class Simulator
         
         monitorView.update(actors, step);
         
+        // Reset the sliders
         SimulatorView.lifeTimeRabbit.setValue(40);
         SimulatorView.lifeTimeFox.setValue(90);
         SimulatorView.lifeTimeBear.setValue(40);
@@ -163,6 +167,10 @@ public class Simulator
         SimulatorView.stepsBeforeDeath.setValue(5);
     }
     
+    /**
+     * Get the number of infected rabbits
+     * @return int infected
+     */
     public static int getInfected()
     {
     	return infected;

@@ -169,6 +169,11 @@ public class Rabbit extends Animal
     	
     }
     
+    /**
+     * Check whether the neighbor of the rabbit is infected
+     * @return true if yes
+     * @return false if not
+     */
     public boolean neighborInfected()
     {
     	 Field field = getField();
