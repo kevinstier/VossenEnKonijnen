@@ -7,13 +7,20 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-
+/**
+ * A class to bundle the pie chart, graph chart and the bar graph into one single JPanel. 
+ * 
+ * @author David J. Barnes and Michael Kölling
+ * @version 2011.07.31
+ */
 public class MonitorView extends JPanel {
 	PieChart3 pieChart;
 	GraphView graphChart;
 	BarGraph barChart;
 	
-	
+	/**
+	 * The constructor to make a JPanel containing the charts.
+	 */
 	public MonitorView() {
 		
 		pieChart = new PieChart3();
@@ -43,7 +50,11 @@ public class MonitorView extends JPanel {
 		
 		setVisible(true);
 	}
-	
+	/**
+	 * Update the charts with the values given in the parameters
+	 * @param actors A list of all animals and hunters
+	 * @param step The current step
+	 */
 	public void update(List<Actor> actors, int step) {
 		
 		Slice[] slices = getSlices(actors, true);
@@ -54,7 +65,14 @@ public class MonitorView extends JPanel {
         
         
 	}
-	
+	/**
+	 * 
+	 * Make a bundle of the values from the actors.
+	 * 
+	 * @param actors A list of all the animals and hunters.
+	 * @param official A boolean that indicates whether the official or the current color of the animal must be used.
+	 * @return Slice
+	 */
 	public static Slice[] getSlices(List<Actor> actors, boolean official) {
 		HashMap<String, ArrayList<Actor>> orderedList = new HashMap<String, ArrayList<Actor>>();
 		ArrayList<String> reminder = new ArrayList<String>();

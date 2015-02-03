@@ -8,7 +8,7 @@ import java.util.*;
  * over time. In its current version, it can only plot exactly two different classes of 
  * animals. If further animals are introduced, they will not currently be displayed.
  * 
- * @author Michael Kölling and David J. Barnes
+ * @author Michael Kölling and David J. Barnes (Edited by Mark Nijboer)
  * @version 2011.07.31
  */
 public class GraphView
@@ -31,10 +31,6 @@ public class GraphView
      * 
      * @param width The width of the plotter window (in pixles).
      * @param height The height of the plotter window (in pixles).
-     * @param startMax The initial maximum value for the y axis.
-     * @param world The world object.
-     * @param class1 The first class to be plotted.
-     * @param width The second class to be plotted.
      */
     public GraphView(int height, int width)
     {
@@ -45,20 +41,9 @@ public class GraphView
         
     }
 
-	/**
-     * Define a color to be used for a given class of animal.
-     * @param animalClass The animal's Class object.
-     * @param color The color to be used for the given class.
-     */
     
     public GraphPanel getPanel() {
     	return this.graph;
-    }
-    
-    public void setColor(Class animalClass, Color color)
-    {
-        colors.put(animalClass, color);
-        classes = colors.keySet();
     }
 
     /**
@@ -82,10 +67,6 @@ public class GraphView
     {
         graph.newRun();
     }
-    
-    /**
-     * Prepare the frame for the graph display.
-     */
 
     // ============================================================================
     /**
@@ -103,6 +84,9 @@ public class GraphView
 
         /**
          * Create a new, empty GraphPanel.
+         * @param width The width of the panel.
+         * @param height The height of the panel.
+         * @param startMax the Y-axis value for the first run.
          */
         public GraphPanel(int width, int height, int startMax)
         {
@@ -129,6 +113,8 @@ public class GraphView
 
         /**
          * Dispay a new point of data.
+         * @param step The current step of the simulation
+         * @param actors The list of actors in the field.
          */
         public void update(int step, java.util.List<Actor> actors)
         {
@@ -167,6 +153,7 @@ public class GraphView
 
         /**
          * Scale the current graph down vertically to make more room at the top.
+         * @param slices An array of the Slice object containing the information.
          */
         public void scaleDown(Slice[] slices)
         {

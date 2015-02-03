@@ -144,8 +144,8 @@ public class Fox extends Animal
     }
     
     /**
-     * Return the regular color of the rabbit
-     * @return the color
+     * Returns the official color linked to the kind of animal.
+     * @return	The animals official color
      */
     public Color getOfficialColor()
     {

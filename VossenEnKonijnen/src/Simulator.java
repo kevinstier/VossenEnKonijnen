@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
 /**
  * A simple predator-prey simulator, based on a rectangular field
  * containing rabbits and foxes.
@@ -16,9 +18,7 @@ public class Simulator
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
-    private static final int DEFAULT_DEPTH = 80; 
-    // The number of infected rabbit at the start
-    private static int infected = 0;
+    private static final int DEFAULT_DEPTH = 80;
 
     // List of animals in the field.
     private List<Actor> actors;
@@ -74,24 +74,19 @@ public class Simulator
     }
     
     /**
-     * Run the simulation from its current state for a reasonably long period,
-     * (4000 steps).
-     */
-    public void runLongSimulation()
-    {
-        simulate(100);
-    }
-    
-    /**
      * Run the simulation from its current state for the given number of steps.
      * Stop before the given number of steps if it ceases to be viable.
      * @param numSteps The number of steps to run for.
      */
-    public void simulate(int numSteps)
+    public boolean simulate(int numSteps)
     {
         for(int step = 1; step <= numSteps && view.isViable(field); step++) {
-            simulateOneStep();
+            if(!simulateOneStep()) {
+            	totalExtinction();
+            	return false;
+            }
         }
+        return true;
     }
     
     /**
@@ -99,7 +94,7 @@ public class Simulator
      * Iterate over the whole field updating the state of each
      * fox and rabbit.
      */
-    public void simulateOneStep()
+    public boolean simulateOneStep()
     {
         step++;
 
@@ -120,6 +115,29 @@ public class Simulator
         view.showStatus(step, field);
         
         monitorView.update(actors, step);
+        
+        if(checkTotalExtinction(actors)) {
+        	return false;
+        }
+        
+        return true;
+    }
+    
+    public boolean checkTotalExtinction(List<Actor> actors) {
+    	
+    	for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
+            Actor actor = it.next();
+            if(!(actor instanceof Hunter)) {
+            	return false;
+            }
+        }
+    	return true;
+    }
+    
+    public void totalExtinction() {
+    	JOptionPane.showMessageDialog(null, "GAME OVER!\nOnly hunters are alive. Reset the simulation to start again.", "Total Extinction", JOptionPane.WARNING_MESSAGE);
+    	view.disableButtons();
+    	view.getResetButton().setEnabled(true);
     }
     
     /**
@@ -135,12 +153,12 @@ public class Simulator
      */
     public void reset()
     {
-    	infected = 0;
         step = 0;
         actors.clear();
         populate();
         stats.hardReset();
         
+        view.enableButtons();
         // Show the starting state in the view.
         view.showStatus(step, field);
         
@@ -167,14 +185,34 @@ public class Simulator
         SimulatorView.stepsBeforeDeath.setValue(5);
     }
     
-    /**
-     * Get the number of infected rabbits
-     * @return int infected
-     */
-    public static int getInfected()
-    {
-    	return infected;
+    public void makeRandomRabbitIll(int times) {
+    	ArrayList<Rabbit> rabbits = new ArrayList<Rabbit>();         
+        // Let all rabbits act.
+        for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
+            Actor actor = it.next();
+            if(actor instanceof Rabbit) {
+            	Rabbit rabbit = (Rabbit) actor;
+                rabbits.add(rabbit);
+            }
+        }
+        for (int i = 0; i < times; i++) {
+	        int length = rabbits.size();
+	        if(length > 0) {
+	        	Random r = new Random();
+	        	int low = 1;
+	        	int high = length + 1;
+	        	int randomNumber = r.nextInt(high-low) + low;
+	        	Rabbit chosenRabbit = rabbits.get(randomNumber);
+	        	if (chosenRabbit.getZiekteGen()){
+	        		i--;
+	        	} else {
+		        	chosenRabbit.setZiekteGen(true);
+		        	view.showStatus(step, field);
+	        	}
+	        }
+        }
     }
+    
     
     /**
      * Randomly populate the field with foxes and rabbits.
@@ -193,9 +231,8 @@ public class Simulator
                 }
                 else if(rand.nextDouble() <= ((double) SimulatorView.getCreationChanceRabbit()) / 100) {
                     Location location = new Location(row, col);
-                    Rabbit rabbit = new Rabbit(true, field, location, infected);
+                    Rabbit rabbit = new Rabbit(true, field, location);
                     actors.add(rabbit);
-                    infected++;
                 }
                 else if(rand.nextDouble() <= ((double) SimulatorView.getCreationChanceBear()) / 100) {
                     Location location = new Location(row, col);

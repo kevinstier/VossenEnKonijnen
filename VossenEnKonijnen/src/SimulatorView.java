@@ -27,7 +27,7 @@ public class SimulatorView extends JFrame
     // Initiate labels
     private JLabel stepLabel, population, legend;
     // Initiate buttons
-    private JButton step1, step100, step1000, reset;
+    private JButton step1, step100, step1000, reset, rabbitIllness, rabbitIllness10;
     // Fieldview
     private FieldView fieldView;
     // Icon
@@ -66,9 +66,12 @@ public class SimulatorView extends JFrame
     private FieldStats stats;
 
     /**
-     * Create a view of the given width and height.
+     * Create a view of the given width and height. Collects all the JPanels and puts them into tabs.
      * @param height The simulation's height.
      * @param width  The simulation's width.
+     * @param fieldStats The stats;
+     * @param monitorView The JPanel containing the charts
+     * @param textView The JPanel with a textual representation of the simulation
      */
     public SimulatorView(int height, int width, FieldStats fieldStats, MonitorView monitorView, TextView textView)
     {
@@ -90,6 +93,8 @@ public class SimulatorView extends JFrame
         step100 = new JButton("Step 100");
         step1000 = new JButton("Step 1000");
         reset = new JButton("Reset");
+        rabbitIllness = new JButton("Make random rabbit ill");
+        rabbitIllness10 = new JButton("Makes 10 random rabbits ill");
         
         JPanel steps = new JPanel(new GridBagLayout());
         GridBagConstraints cst = new GridBagConstraints();
@@ -139,7 +144,19 @@ public class SimulatorView extends JFrame
         steps.add(step1000, cst);
         
         cst.gridx = 0;
+        cst.gridy = 3;
+        cst.weightx = 1.0;
+        cst.weighty = 1.0;
+        steps.add(rabbitIllness, cst);
+        
+        cst.gridx = 0;
         cst.gridy = 4;
+        cst.weightx = 1.0;
+        cst.weighty = 1.0;
+        steps.add(rabbitIllness10, cst);
+        
+        cst.gridx = 0;
+        cst.gridy = 5;
         cst.weightx = 1.0;
         cst.weighty = 1.0;
         
@@ -235,12 +252,30 @@ public class SimulatorView extends JFrame
     }
     
     /**
+     * Get the rabbitIllness button
+     * @return the rabbitIllness button
+     */
+    public JButton getRabbitIllnessButton() {
+    	return this.rabbitIllness;
+    }
+    
+    /**
+     * Get the rabbitIllness10 button
+     * @return the rabbitIllness10 button
+     */
+    public JButton getRabbitIllnessButton10() {
+    	return this.rabbitIllness10;
+    }
+    
+    /**
      * Disable the buttons
      */
     public void disableButtons() {
     	this.step1.setEnabled(false);
     	this.step100.setEnabled(false);
     	this.step1000.setEnabled(false);
+    	this.rabbitIllness.setEnabled(false);
+    	this.rabbitIllness10.setEnabled(false);
     	this.reset.setEnabled(false);
     }
     
@@ -251,6 +286,8 @@ public class SimulatorView extends JFrame
     	this.step1.setEnabled(true);
     	this.step100.setEnabled(true);
     	this.step1000.setEnabled(true);
+    	this.rabbitIllness.setEnabled(true);
+    	this.rabbitIllness10.setEnabled(true);
     	this.reset.setEnabled(true);
     }
     

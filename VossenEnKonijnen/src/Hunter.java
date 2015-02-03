@@ -64,8 +64,8 @@ public class Hunter implements Actor {
     }
     
     /**
-     * Get the regular hunter color
-     * @return the color
+     * Returns the official color linked to hunter.
+     * @return	The hunters official color
      */
     public Color getOfficialColor() {
     	return HUNTER_COLOR;
@@ -143,7 +143,7 @@ public class Hunter implements Actor {
         return null;
     }
 	
-
+    @Override
 	public boolean isAlive() {
 		return true;
 	}

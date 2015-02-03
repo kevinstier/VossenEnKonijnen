@@ -20,7 +20,6 @@ public abstract class Animal implements Actor
     private int age;
  // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    private int infected = 0;
     
     protected Color color;
     protected Color OFFICIAL_COLOR;
@@ -45,21 +44,27 @@ public abstract class Animal implements Actor
      * @param newAnimals A list to receive newly born animals.
      */
     abstract public void act(List<Actor> newActors);
-
-
-    /**
-     * Indicate that the animal is no longer alive.
-     * It is removed from the field.
-     */
     
+    /**
+     * Returns the current color of the animal.
+     * @return	The animals current color
+     */
     public Color getColor() {
     	return color;
     }
     
+    /**
+     * Returns the official color linked to the kind of animal.
+     * @return	The animals official color
+     */
     public Color getOfficialColor() {
     	return OFFICIAL_COLOR;
     }
     
+    /**
+     * Indicate that the animal is no longer alive.
+     * It is removed from the field.
+     */
     protected void setDead()
     {
         alive = false;
@@ -153,7 +158,7 @@ public abstract class Animal implements Actor
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             if (animal instanceof Rabbit) {
-            	nieuw = new Rabbit(false, field, loc, infected);
+            	nieuw = new Rabbit(false, field, loc);
             }
             else if (animal instanceof Fox) {
             	nieuw = new Fox(false, field, loc);
@@ -203,7 +208,11 @@ public abstract class Animal implements Actor
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+	
+	/**
+     * Returns if animal is alive. False by default;
+     * @return false.
+     */
 	public boolean isAlive() {
 		return false;
 	}

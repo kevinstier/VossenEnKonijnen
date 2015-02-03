@@ -47,7 +47,7 @@ public class Rabbit extends Animal
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Rabbit(boolean randomAge, Field field, Location location, int numberInfected)
+    public Rabbit(boolean randomAge, Field field, Location location)
     {
         super(field, location);
     	color = Color.orange;
@@ -60,12 +60,6 @@ public class Rabbit extends Animal
         } else {
         	setAge(0);
         }
-        Random randomGenerator = new Random();
-        int random = randomGenerator.nextInt(100);
-    	if( random <= FIRST_INFECTED_CHANCE && numberInfected < FIRST_INFECTED)
-    	{
-    		setZiekteGen(true);
-    	}
     }
     
     /**
@@ -125,7 +119,7 @@ public class Rabbit extends Animal
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Rabbit young = new Rabbit(false, field, loc, Simulator.getInfected());
+            Rabbit young = new Rabbit(false, field, loc);
             if (getZiekteGen()) {
             	young.setZiekteGen(true);
             }

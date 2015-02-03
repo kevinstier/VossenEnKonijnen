@@ -7,7 +7,6 @@ import javax.swing.JSlider;
  * @author Ronald Elzen
  *
  */
-
 public class Configuration extends JPanel{
 	private JSlider a;
 	private JLabel b;
