@@ -1,12 +1,10 @@
 package view;
 
-import javax.swing.JFrame;  
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;  
 import javax.swing.text.DefaultCaret;
   
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;  
   

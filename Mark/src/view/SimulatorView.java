@@ -64,8 +64,6 @@ public class SimulatorView extends JFrame
     public static Configuration infectionChance;
     public static Configuration stepsBeforeDeath;
     
-    // A map for storing colors for participants in the simulation
-    private Map<Class, Color> colors;
     // A statistics object computing and storing simulation information
     private FieldStats stats;
 
@@ -80,7 +78,6 @@ public class SimulatorView extends JFrame
     public SimulatorView(int height, int width, FieldStats fieldStats, MonitorView monitorView, TextView textView)
     {
         stats = fieldStats;
-        colors = new LinkedHashMap<Class, Color>();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         setResizable(false);

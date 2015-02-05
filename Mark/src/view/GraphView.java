@@ -20,15 +20,11 @@ public class GraphView
     private static final Color LIGHT_GRAY = new Color(0, 0, 0, 40);
 
     private static GraphPanel graph;
-    private static JLabel stepLabel;
-    private static JLabel countLabel;
 
     // The classes being tracked by this view
     private Set<Class> classes;
     // A map for storing colors for participants in the simulation
     private Map<Class, Color> colors;
-    // A statistics object computing and storing simulation information
-    private FieldStats stats;
 
     /**
      * Constructor.

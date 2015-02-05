@@ -207,12 +207,8 @@ public class Simulator
 	        	int high = length + 1;
 	        	int randomNumber = r.nextInt(high-low) + low;
 	        	Rabbit chosenRabbit = rabbits.get(randomNumber-2);
-	        	if (chosenRabbit.getZiekteGen()){
-	        		i--;
-	        	} else {
-		        	chosenRabbit.setZiekteGen(true);
-		        	view.showStatus(step, field);
-	        	}
+	        	chosenRabbit.setZiekteGen(true);
+	        	view.showStatus(step, field);
 	        }
         }
     }

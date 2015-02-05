@@ -26,10 +26,6 @@ public class Rabbit extends Animal
     private static final Random rand = Randomizer.getRandom();
     // A boolean to see whether the rabbit is sick or not
     private boolean ziek;
-    // The chance the rabbit is one of the first to be infected
-    private final int FIRST_INFECTED_CHANCE = 20;
-    // Maximum of first infected rabbits
-    private final int FIRST_INFECTED = 500;
     // Integer for how many steps the rabbit has been sick
     private int timeSick = 0;
     // Count neighbors

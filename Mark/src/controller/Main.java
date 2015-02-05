@@ -1,7 +1,6 @@
 package controller;
 
 import model.*;
-import view.*;
 
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
