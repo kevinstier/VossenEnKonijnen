@@ -1,3 +1,7 @@
+package view;
+
+import model.*;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;

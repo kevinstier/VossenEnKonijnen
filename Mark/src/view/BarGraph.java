@@ -1,6 +1,7 @@
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
+package view;
+
+import model.Slice;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

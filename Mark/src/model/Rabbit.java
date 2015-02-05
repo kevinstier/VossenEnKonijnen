@@ -1,3 +1,7 @@
+package model;
+
+import view.*;
+
 import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;

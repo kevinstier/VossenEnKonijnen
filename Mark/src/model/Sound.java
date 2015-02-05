@@ -1,3 +1,5 @@
+package model;
+
 import java.io.*;
 import java.util.Random;
 import sun.audio.*;
@@ -8,9 +10,8 @@ import sun.audio.*;
  *
  */
 public class Sound {
-public static void play()
-			  throws Exception
-			  {
+public static void play(){
+			  try {
 			    // open the sound file as a Java input stream
 	            
 	            InputStream in1 = new FileInputStream("/sound1.wav");
@@ -38,5 +39,8 @@ public static void play()
                 {
 	             AudioPlayer.player.start(as3); 
 	            }
+	             } catch(Exception e) {
+	            	 
 	             }
+	}
 }

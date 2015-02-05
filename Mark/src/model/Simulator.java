@@ -1,3 +1,7 @@
+package model;
+
+import view.*;
+
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
@@ -185,7 +189,7 @@ public class Simulator
         SimulatorView.stepsBeforeDeath.setValue(5);
     }
     
-    public void makeRandomRabbitIll() {
+    public void makeRandomRabbitIll(int times) {
     	ArrayList<Rabbit> rabbits = new ArrayList<Rabbit>();         
         // Let all rabbits act.
         for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
@@ -195,15 +199,21 @@ public class Simulator
                 rabbits.add(rabbit);
             }
         }
-        int length = rabbits.size();
-        if(length > 0) {
-        	Random r = new Random();
-        	int low = 1;
-        	int high = length + 1;
-        	int randomNumber = r.nextInt(high-low) + low;
-        	Rabbit chosenRabbit = rabbits.get(randomNumber);
-        	chosenRabbit.setZiekteGen(true);
-        	view.showStatus(step, field);
+        for (int i = 0; i < times; i++) {
+	        int length = rabbits.size();
+	        if(length > 0) {
+	        	Random r = new Random();
+	        	int low = 1;
+	        	int high = length + 1;
+	        	int randomNumber = r.nextInt(high-low) + low;
+	        	Rabbit chosenRabbit = rabbits.get(randomNumber);
+	        	if (chosenRabbit.getZiekteGen()){
+	        		i--;
+	        	} else {
+		        	chosenRabbit.setZiekteGen(true);
+		        	view.showStatus(step, field);
+	        	}
+	        }
         }
     }
     

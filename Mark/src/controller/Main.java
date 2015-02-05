@@ -1,3 +1,8 @@
+package controller;
+
+import model.*;
+import view.*;
+
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +28,7 @@ public class Main {
 		JButton step1000 = simulator.getSimulatorView().getStep1000Button();
 		JButton reset = simulator.getSimulatorView().getResetButton();
 		JButton rabbitIllness = simulator.getSimulatorView().getRabbitIllnessButton();
+		JButton rabbitIllness10 = simulator.getSimulatorView().getRabbitIllnessButton10();
 		
 		step1.addActionListener(new ActionListener() {
 			
@@ -74,10 +80,16 @@ public class Main {
 		rabbitIllness.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent evt) {
-				simulator.makeRandomRabbitIll();
+				simulator.makeRandomRabbitIll(1);
 			}
 		});
 		
+		rabbitIllness10.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent evt) {
+				simulator.makeRandomRabbitIll(10);
+			}
+		});
 		
 	}
 }

@@ -1,3 +1,7 @@
+package view;
+
+import model.*;
+
 import java.awt.*;
 
 import javax.swing.*;
@@ -27,7 +31,7 @@ public class SimulatorView extends JFrame
     // Initiate labels
     private JLabel stepLabel, population, legend;
     // Initiate buttons
-    private JButton step1, step100, step1000, reset, rabbitIllness;
+    private JButton step1, step100, step1000, reset, rabbitIllness, rabbitIllness10;
     // Fieldview
     private FieldView fieldView;
     // Icon
@@ -85,7 +89,7 @@ public class SimulatorView extends JFrame
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
-        logoImage = new ImageIcon(Simulator.class.getResource("/Legenda3.png"));
+        logoImage = new ImageIcon(Simulator.class.getResource("/view/Legenda3.png"));
         legend = new JLabel(logoImage, JLabel.CENTER);
         
         JPanel panelleft = new JPanel(new BorderLayout());
@@ -93,8 +97,8 @@ public class SimulatorView extends JFrame
         step100 = new JButton("Step 100");
         step1000 = new JButton("Step 1000");
         reset = new JButton("Reset");
-        
         rabbitIllness = new JButton("Make random rabbit ill");
+        rabbitIllness10 = new JButton("Makes 10 random rabbits ill");
         
         JPanel steps = new JPanel(new GridBagLayout());
         GridBagConstraints cst = new GridBagConstraints();
@@ -147,11 +151,16 @@ public class SimulatorView extends JFrame
         cst.gridy = 3;
         cst.weightx = 1.0;
         cst.weighty = 1.0;
-        
         steps.add(rabbitIllness, cst);
         
         cst.gridx = 0;
         cst.gridy = 4;
+        cst.weightx = 1.0;
+        cst.weighty = 1.0;
+        steps.add(rabbitIllness10, cst);
+        
+        cst.gridx = 0;
+        cst.gridy = 5;
         cst.weightx = 1.0;
         cst.weighty = 1.0;
         
@@ -255,6 +264,14 @@ public class SimulatorView extends JFrame
     }
     
     /**
+     * Get the rabbitIllness10 button
+     * @return the rabbitIllness10 button
+     */
+    public JButton getRabbitIllnessButton10() {
+    	return this.rabbitIllness10;
+    }
+    
+    /**
      * Disable the buttons
      */
     public void disableButtons() {
@@ -262,6 +279,7 @@ public class SimulatorView extends JFrame
     	this.step100.setEnabled(false);
     	this.step1000.setEnabled(false);
     	this.rabbitIllness.setEnabled(false);
+    	this.rabbitIllness10.setEnabled(false);
     	this.reset.setEnabled(false);
     }
     
@@ -273,6 +291,7 @@ public class SimulatorView extends JFrame
     	this.step100.setEnabled(true);
     	this.step1000.setEnabled(true);
     	this.rabbitIllness.setEnabled(true);
+    	this.rabbitIllness10.setEnabled(true);
     	this.reset.setEnabled(true);
     }
     
