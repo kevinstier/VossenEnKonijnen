@@ -206,7 +206,7 @@ public class Simulator
 	        	int low = 1;
 	        	int high = length + 1;
 	        	int randomNumber = r.nextInt(high-low) + low;
-	        	Rabbit chosenRabbit = rabbits.get(randomNumber-1);
+	        	Rabbit chosenRabbit = rabbits.get(randomNumber-2);
 	        	if (chosenRabbit.getZiekteGen()){
 	        		i--;
 	        	} else {
